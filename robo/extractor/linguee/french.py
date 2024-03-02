@@ -3,7 +3,7 @@ import robo.extractor.web as web
 
 
 class LingueeFrench(Extractor):
-    def extract(key: str) -> Result:
+    def extract(self, key: str) -> Result:
         url = "https://www.linguee.com/french-english/translation/fl%C3%A2ner.html"
-        web.get_data(url)
-        return []
+        web.get_page_data(url)
+        return Result("", [])
