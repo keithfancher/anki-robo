@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
 
-from robo.extractor import Extractor
-from robo.extractor.linguee.french import LingueeFrench
+import robo.extractors as extractors
 
 
 def main():
-    e = Extractor()
-    el = LingueeFrench()
-    print("yo")
+    extract = extractors.get_extractor("linguee-fr")
+
+    key = "flâner"
+    result = extract(key)
+
+    print("yo: " + str(result))
 
 
 if __name__ == "__main__":
