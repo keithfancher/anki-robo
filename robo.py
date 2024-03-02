@@ -10,7 +10,7 @@ def main():
     key = "flâner"
     result = extract(key)
 
-    print("yo: " + str(result))
+    print(str(result))
 
 
 if __name__ == "__main__":
