@@ -1,6 +1,8 @@
 import robo.extractor.web as web
 from robo.extractor import Result
 
+NAME: str = "linguee-fr"
+
 
 # TODO: pull out functionality shared by ALL linguee pages/languages. Share!
 def extract(key: str, local_testing: bool) -> list[Result]:

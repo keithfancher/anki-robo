@@ -3,7 +3,7 @@ from robo.extractor import Extractor
 
 # Map from: extractorName -> extract function
 extractors: dict[str, Extractor] = {
-    "linguee-fr": linguee_fr.extract,
+    linguee_fr.NAME: linguee_fr.extract,
 }
 
 
