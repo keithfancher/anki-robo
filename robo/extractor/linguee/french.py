@@ -27,6 +27,16 @@ def data_from_term(key: str, term) -> dict[str, str]:
     english_words_results = term.select("a.dictLink.featured")
     english_words: list[str] = [r.string for r in english_words_results]
 
+    word_type = web.safe_string(term.select_one("span.tag_wordtype"))
+
+    # Note use of `strings` here, plural. There's a whole tree of elements and
+    # we just want the contained text.
+    #
+    # TODO: Better split apart and format these other forms.
+    other_forms = web.safe_strings(
+        term.select_one("h2.line.lemma_desc > span.tag_forms")
+    )
+
     # List of tuples in the form: (French sentence, English sentence)
     example_sentence_pairs: list[tuple[str, str]] = example_sentences(term)
 
@@ -41,6 +51,8 @@ def data_from_term(key: str, term) -> dict[str, str]:
     return {
         "input": key,
         "english": ", ".join(english_words),
+        "word_type": word_type,
+        "other_forms": "".join(other_forms).strip(),
         "french_sentence": french_sentence,
         "english_sentence": english_sentence,
     }
