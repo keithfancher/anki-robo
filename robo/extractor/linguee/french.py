@@ -1,4 +1,5 @@
 import robo.extractor.web as web
+from robo.extractor import Result
 
 # URLs?
 # Probably explicitly french/english:
@@ -14,7 +15,7 @@ import robo.extractor.web as web
 
 
 # TODO: pull out functionality shared by ALL linguee pages/languages. Share!
-def extract(key: str) -> dict[str, str]:
+def extract(key: str) -> list[Result]:
     # url = f"https://www.linguee.com/french-english/translation/{key}.html"
     # soup = web.get_page_data(url) # TODO!
     soup = web.get_local_page_data(key, "linguee/french", "ISO-8859-15")
@@ -24,10 +25,9 @@ def extract(key: str) -> dict[str, str]:
         # Get only the first matching term. This prevents situations where,
         # e.g., if you search "encre", you also get "encrer" in the results.
         first_match = term_matches[0]
-        return data_from_term(key, first_match)
+        return [data_from_term(key, first_match)]
     else:
-        # TODO: a better way to signal empty results
-        return {}
+        return []
 
 
 def data_from_term(key: str, term) -> dict[str, str]:

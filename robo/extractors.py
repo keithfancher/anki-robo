@@ -1,20 +1,14 @@
-from typing import Callable, TypeAlias
-
 import robo.extractor.linguee.french as linguee_fr
-
-# Extract function takes a search key and returns a dict[str, str].
-# TODO: Type aliases/wrappers to make these various string types explicit, probably.
-ExtractFunction: TypeAlias = Callable[[str], dict[str, str]]
-
+from robo.extractor import Extractor
 
 # Map from: extractorName -> extract function
-extractors: dict[str, ExtractFunction] = {
+extractors: dict[str, Extractor] = {
     "linguee-fr": linguee_fr.extract,
 }
 
 
 # TODO: Handle missing keys... somehow.
-def get_extractor(name: str) -> ExtractFunction:
+def get_extractor(name: str) -> Extractor:
     return extractors[name]
 
 

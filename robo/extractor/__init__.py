@@ -1,7 +1,6 @@
-from dataclasses import dataclass
+from typing import Callable, TypeAlias
 
-
-@dataclass
-class Result:
-    key: str
-    data: list[dict]  # TODO: obviously not real
+# Extract function takes a search key and returns a list of Results.
+SearchKey: TypeAlias = str
+Result: TypeAlias = dict[str, str]
+Extractor: TypeAlias = Callable[[SearchKey], list[Result]]
