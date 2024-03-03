@@ -4,20 +4,14 @@
 import json
 import sys
 
-import robo.extractors as extractors
-
-
-def extract_one(key: str) -> str:
-    extract = extractors.get_extractor("linguee-fr")
-    local_testing = True
-    result = extract(key, local_testing)
-    return json.dumps(result)
+import robo
 
 
 def main():
     if len(sys.argv) == 2:
-        key = sys.argv[1]
-        print(extract_one(key))
+        search_key = sys.argv[1]
+        result = robo.extract_one("linguee-fr", search_key, local_testing=True)
+        print(json.dumps(result))
     else:
         print("Usage: robo.py [SEARCH_KEY]")
 
