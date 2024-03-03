@@ -9,7 +9,8 @@ import robo.extractors as extractors
 
 def extract_one(key: str) -> str:
     extract = extractors.get_extractor("linguee-fr")
-    result = extract(key)
+    local_testing = True
+    result = extract(key, local_testing)
     return json.dumps(result)
 
 

@@ -1,24 +1,13 @@
 import robo.extractor.web as web
 from robo.extractor import Result
 
-# URLs?
-# Probably explicitly french/english:
-# https://www.linguee.com/french-english/translation/fl%C3%A2ner.html
-#
-# Above works even for bad results:
-# https://www.linguee.com/french-english/translation/asdfasdf.html
-# And misspellings: ("Did you mean 'flâner'?")
-# https://www.linguee.com/french-english/translation/flaner.html
-#
-# Could mistakenly find English words, we want only French:
-# https://www.linguee.com/english-french/search?source=auto&query=tonnerre
-
 
 # TODO: pull out functionality shared by ALL linguee pages/languages. Share!
-def extract(key: str) -> list[Result]:
-    # url = f"https://www.linguee.com/french-english/translation/{key}.html"
-    # soup = web.get_page_data(url) # TODO!
-    soup = web.get_local_page_data(key, "linguee/french", "ISO-8859-15")
+def extract(key: str, local_testing: bool) -> list[Result]:
+    url = f"https://www.linguee.com/french-english/translation/{key}.html"
+    soup = web.get_page_data(
+        key, url, local_testing, "linguee/french", encoding="ISO-8859-15"
+    )
 
     term_matches = soup.select("div#dictionary div.lemma.featured")
     if term_matches:
