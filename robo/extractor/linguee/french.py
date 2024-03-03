@@ -20,22 +20,31 @@ def extract(key: str) -> dict[str, str]:
     # soup = web.get_page_data(url) # TODO!
     soup = web.get_local_page_data(key, "linguee/french", "ISO-8859-15")
 
-    english_words_results = soup.find_all("a", class_="dictLink featured")
+    term_matches = soup.select("div#dictionary div.lemma.featured")
+    if term_matches:
+        # Get only the first matching term. This prevents situations where,
+        # e.g., if you search "encre", you also get "encrer" in the results.
+        first_match = term_matches[0]
+        return data_from_term(key, first_match)
+    else:
+        # TODO: a better way to signal empty results
+        return {}
+
+
+def data_from_term(key: str, term) -> dict[str, str]:
+    # All the "common" corresponding english words. These are usually the ones
+    # with example sentences as well.
+    english_words_results = term.select("a.dictLink.featured")
     english_words: list[str] = [r.string for r in english_words_results]
 
-    example_lines_selector = (
-        "div.translation.sortablemg.featured > div.example_lines > div.example.line"
-    )
+    # List of tuples in the form: (French sentence, English sentence)
+    example_sentence_pairs: list[tuple[str, str]] = example_sentences(term)
 
-    example_lines = soup.select(example_lines_selector)
-    example_sentence_pairs: list[tuple[str, str]] = list(
-        map(example_pairs_from_line, example_lines)
-    )
-
-    # TODO: Return multiple sets of example sentences, probably
     french_sentence: str = ""
     english_sentence: str = ""
     if example_sentence_pairs:
+        # Just getting the FIRST example pair for now. Later, we can decide how
+        # to provide multiple options.
         french_sentence = example_sentence_pairs[0][0]
         english_sentence = example_sentence_pairs[0][1]
 
@@ -47,7 +56,20 @@ def extract(key: str) -> dict[str, str]:
     }
 
 
-def example_pairs_from_line(soup) -> tuple[str, str]:
-    fr_sentence = soup.find("span", class_="tag_s").string
-    en_sentence = soup.find("span", class_="tag_t").string
+def example_sentences(term) -> list[tuple[str, str]]:
+    example_lines_selector = (
+        "div.translation.sortablemg.featured > div.example_lines > div.example.line"
+    )
+
+    example_lines = term.select(example_lines_selector)
+    example_sentence_pairs: list[tuple[str, str]] = list(
+        map(example_pair_from_line, example_lines)
+    )
+
+    return example_sentence_pairs
+
+
+def example_pair_from_line(example_line) -> tuple[str, str]:
+    fr_sentence = example_line.find("span", class_="tag_s").string
+    en_sentence = example_line.find("span", class_="tag_t").string
     return (fr_sentence, en_sentence)
