@@ -3,6 +3,7 @@
 
 import json
 import sys
+
 import robo.extractors as extractors
 
 

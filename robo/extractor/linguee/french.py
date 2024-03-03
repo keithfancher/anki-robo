@@ -1,6 +1,5 @@
 import robo.extractor.web as web
 
-
 # URLs?
 # Probably explicitly french/english:
 # https://www.linguee.com/french-english/translation/fl%C3%A2ner.html
