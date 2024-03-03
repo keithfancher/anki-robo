@@ -16,8 +16,9 @@ import robo.extractor.web as web
 
 # TODO: pull out functionality shared by ALL linguee pages/languages. Share!
 def extract(key: str) -> dict[str, str]:
-    url = f"https://www.linguee.com/french-english/translation/{key}.html"
-    soup = web.get_page_data(url)
+    # url = f"https://www.linguee.com/french-english/translation/{key}.html"
+    # soup = web.get_page_data(url) # TODO!
+    soup = web.get_local_page_data(key, "linguee/french", "ISO-8859-15")
 
     english_words_results = soup.find_all("a", class_="dictLink featured")
     english_words: list[str] = [r.string for r in english_words_results]
