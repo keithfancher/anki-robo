@@ -19,3 +19,6 @@ typecheck:
 	@echo "Checking types..."
 	mypy robo.py
 	@echo "Done\n"
+
+test:
+	pytest
