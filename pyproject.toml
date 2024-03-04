@@ -1,0 +1,12 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "anki-robo"
+version = "0.0.1"
+
+[tool.pytest.ini_options]
+# See: https://docs.pytest.org/en/8.0.x/explanation/goodpractices.html
+# and: https://stackoverflow.com/a/49033954
+pythonpath = "."
