@@ -1,4 +1,4 @@
-.PHONY: all format lint typecheck
+.PHONY: all format lint typecheck test
 
 all: format typecheck lint
 
@@ -17,7 +17,7 @@ lint:
 
 typecheck:
 	@echo "Checking types..."
-	mypy robo.py
+	mypy robo-run.py
 	@echo "Done\n"
 
 test:
