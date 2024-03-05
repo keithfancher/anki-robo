@@ -1,7 +1,7 @@
 import csv
 import io
 
-from robo.extractor import Result
+from robo.types import Result
 
 
 def to_csv(results: list[Result]) -> str:

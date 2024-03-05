@@ -1,6 +1,6 @@
 import robo
 import robo.extractor.linguee.french as linguee_fr
-from robo.extractor import Result
+from robo.types import Result
 
 TESTING = True  # Clearly!
 

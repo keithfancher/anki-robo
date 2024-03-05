@@ -1,5 +1,5 @@
 import robo.extractor.linguee.french as linguee_fr
-from robo.extractor import Extractor
+from robo.types import Extractor
 
 # Map from: extractorName -> extract function
 extractors: dict[str, Extractor] = {

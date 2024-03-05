@@ -1,5 +1,5 @@
 import robo.extractors as extractors
-from robo.extractor import Result
+from robo.types import Result
 
 
 def extract_one(extractor_name: str, key: str, local_testing: bool) -> list[Result]:

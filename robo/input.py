@@ -1,5 +1,5 @@
 import robo
-from robo.extractor import Result
+from robo.types import Result
 
 
 def from_plaintext(text: str, extractor_name: str, local_testing: bool) -> list[Result]:

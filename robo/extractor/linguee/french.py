@@ -1,5 +1,5 @@
 import robo.extractor.web as web
-from robo.extractor import Result
+from robo.types import Result
 
 NAME: str = "linguee-fr"
 
