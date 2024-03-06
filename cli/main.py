@@ -1,4 +1,5 @@
 import argparse
+from datetime import datetime
 
 import robo
 
@@ -21,9 +22,23 @@ def show_results(results: robo.ResultSummary) -> None:
     print(f"\nNOT FOUND: {len(not_found)}")
     for f in not_found:
         print(f"\t{f}")
-
     print()
-    print(robo.to_csv(results.results))
+
+
+def write_output(
+    results: robo.ResultSummary, extractor_name: str, stdout: bool
+) -> None:
+    csv_data = robo.to_csv(results.results)
+    if stdout:
+        print("CSV DATA:")
+        print(csv_data, end="")
+    else:
+        ts = round(datetime.now().timestamp())
+        filename = f"ankirobo-{extractor_name}-{ts}.csv"
+        print(f"Writing CSV output to {filename}... ", end="")
+        with open(filename, "w") as f:
+            f.write(csv_data)
+        print("Complete!")
 
 
 def list_extractors_callback(args: argparse.Namespace) -> None:
@@ -36,6 +51,7 @@ def extract_callback(args: argparse.Namespace) -> None:
     try:
         r = from_text_file(args.infile, args.extractor, local_testing)
         show_results(r)
+        write_output(r, args.extractor, args.stdout)
     except robo.InvalidExtractorName:
         print("Invalid extractor name: " + args.extractor)
     except FileNotFoundError:
@@ -59,6 +75,12 @@ def main() -> None:
     )
     parser_get.add_argument("extractor")
     parser_get.add_argument("infile")
+    parser_get.add_argument(
+        "--stdout",
+        "-s",
+        help="Write output CSV to standard out instead of a file",
+        action="store_true",
+    )
     parser_get.set_defaults(func=extract_callback)
 
     args = parser.parse_args()
