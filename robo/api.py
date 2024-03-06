@@ -1,5 +1,5 @@
 import robo.extractors as extractors
-from robo.types import Result
+from robo.types import Result, ResultSummary
 
 
 def extract_one(extractor_name: str, key: str, local_testing: bool) -> list[Result]:
@@ -12,14 +12,20 @@ def extract_one(extractor_name: str, key: str, local_testing: bool) -> list[Resu
 
 def extract_list(
     extractor_name: str, keys: list[str], local_testing: bool
-) -> list[Result]:
+) -> ResultSummary:
     """Fetch the given `Extractor` by name and use it to extract data for the
     given list of search keys. If `local_testing` is `True`, attempt to use
     local test data instead of hitting a remote source."""
-    results: list[Result] = []
+    results_summary = empty_summary()
     extract = extractors.get_extractor(extractor_name)
-    for k in keys:  # TODO: parallism, etc.
+    for key in keys:  # TODO: parallism, etc.
         # Note that each `extract` result is itself a list. We want to simply
         # append all the list results into a single, flat list.
-        results = results + extract(k.strip(), local_testing)
-    return results
+        k = key.strip()
+        r = extract(k, local_testing)
+        results_summary.append(k, r)
+    return results_summary
+
+
+def empty_summary() -> ResultSummary:
+    return ResultSummary(results=[], results_success=set(), results_not_found=set())
