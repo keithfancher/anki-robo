@@ -8,7 +8,7 @@ DEFAULT_PARSER: str = "html.parser"
 
 def get_page_data(
     key: str, url: str, local_testing: bool, local_path: str, encoding: str = "utf-8"
-) -> BeautifulSoup:
+) -> Optional[BeautifulSoup]:
     """Gets parsed web page data, either from a remote URL or local test files.
     For now, `local_path` is relative to `tests/testdata/`. Within
     `local_path`, we look for a file called `{key}.html`."""
@@ -19,20 +19,23 @@ def get_page_data(
     return soup
 
 
-def get_remote_page_data(url: str) -> BeautifulSoup:
+def get_remote_page_data(url: str) -> Optional[BeautifulSoup]:
     """Fetch the page at the given URL and parse with `BeautifulSoup`."""
     page = requests.get(url)
     soup = BeautifulSoup(page.content, DEFAULT_PARSER)
     return soup
 
 
-def get_local_page_data(key: str, path: str, enc: str) -> BeautifulSoup:
+def get_local_page_data(key: str, path: str, enc: str) -> Optional[BeautifulSoup]:
     """Get local HTML data instead of fetching from a URL. Look for a file
     called `{key}.html` in the given local path."""
     # TODO: cleanup/normalize path concatenation
     newpath = "tests/testdata/" + path + f"/{key}.html"
-    with open(newpath, encoding=enc) as fp:
-        soup = BeautifulSoup(fp, DEFAULT_PARSER)
+    try:
+        with open(newpath, encoding=enc) as fp:
+            soup = BeautifulSoup(fp, DEFAULT_PARSER)
+    except FileNotFoundError:
+        soup = None
     return soup
 
 

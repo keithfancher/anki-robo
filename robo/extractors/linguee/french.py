@@ -10,6 +10,8 @@ def extract(key: str, local_testing: bool) -> list[Result]:
     soup = web.get_page_data(
         key, url, local_testing, "linguee/french", encoding="ISO-8859-15"
     )
+    if not soup:
+        return []
 
     term_matches = soup.select("div#dictionary div.lemma.featured")
     if term_matches:
