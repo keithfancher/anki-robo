@@ -3,11 +3,27 @@ import argparse
 import robo
 
 
-def from_text_file(filename: str, extractor_name: str, local_testing: bool) -> str:
+def from_text_file(
+    filename: str, extractor_name: str, local_testing: bool
+) -> robo.ResultSummary:
     with open(filename, "r") as f:
         contents = f.read()
-    results_summary = robo.from_plaintext(contents, extractor_name, local_testing)
-    return robo.to_csv(results_summary.results)
+    return robo.from_plaintext(contents, extractor_name, local_testing)
+
+
+def show_results(results: robo.ResultSummary) -> None:
+    success = results.results_success
+    print(f"SUCCESS: {len(success)}")
+    for s in success:
+        print(f"\t{s}")
+
+    not_found = results.results_not_found
+    print(f"\nNOT FOUND: {len(not_found)}")
+    for f in not_found:
+        print(f"\t{f}")
+
+    print()
+    print(robo.to_csv(results.results))
 
 
 def list_extractors_callback(args: argparse.Namespace) -> None:
@@ -19,7 +35,7 @@ def extract_callback(args: argparse.Namespace) -> None:
     local_testing = True  # TODO!
     try:
         r = from_text_file(args.infile, args.extractor, local_testing)
-        print(r)
+        show_results(r)
     except robo.InvalidExtractorName:
         print("Invalid extractor name: " + args.extractor)
     except FileNotFoundError:
