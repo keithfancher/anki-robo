@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Optional
 
 import requests
@@ -29,12 +30,11 @@ def get_remote_page_data(url: str) -> Optional[BeautifulSoup]:
 def get_local_page_data(key: str, path: str, enc: str) -> Optional[BeautifulSoup]:
     """Get local HTML data instead of fetching from a URL. Look for a file
     called `{key}.html` in the given local path."""
-    # TODO: cleanup/normalize path concatenation
-    newpath = "tests/testdata/" + path + f"/{key}.html"
-    try:
-        with open(newpath, encoding=enc) as fp:
+    newpath = Path("tests/testdata/" + path + f"/{key}.html")
+    if newpath.exists():
+        with newpath.open(encoding=enc) as fp:
             soup = BeautifulSoup(fp, DEFAULT_PARSER)
-    except FileNotFoundError:
+    else:
         soup = None
     return soup
 
