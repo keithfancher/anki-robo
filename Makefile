@@ -17,7 +17,7 @@ lint:
 
 typecheck:
 	@echo "Checking types..."
-	mypy robo-run.py
+	mypy ankirobo
 	@echo "Done\n"
 
 test:
