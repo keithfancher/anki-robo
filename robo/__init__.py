@@ -2,7 +2,7 @@ from robo.api import extract_list, extract_one
 from robo.extractors import get_extractor_names
 from robo.input import from_plaintext
 from robo.output import to_csv
-from robo.types import Result, ResultSummary
+from robo.types import InvalidExtractorName, Result, ResultSummary
 
 # The public API of the `robo` library.
 __all__ = [
@@ -15,4 +15,6 @@ __all__ = [
     # Types
     "Result",
     "ResultSummary",
+    # Exceptions
+    "InvalidExtractorName",
 ]
