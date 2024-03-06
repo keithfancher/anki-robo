@@ -5,3 +5,7 @@ from typing import Callable, TypeAlias
 SearchKey: TypeAlias = str
 Result: TypeAlias = dict[str, str]
 Extractor: TypeAlias = Callable[[SearchKey, bool], list[Result]]
+
+
+class InvalidExtractorName(Exception):
+    pass
