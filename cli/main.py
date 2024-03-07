@@ -28,7 +28,7 @@ def show_results(results: robo.ResultSummary) -> None:
 def write_output(
     results: robo.ResultSummary, extractor_name: str, stdout: bool
 ) -> None:
-    csv_data = robo.to_csv(results.results)
+    csv_data = robo.to_csv(results.results, extractor_name)
     if stdout:
         print("CSV DATA:")
         print(csv_data, end="")

@@ -4,7 +4,7 @@ import io
 from robo.types import Result
 
 
-def to_csv(results: list[Result]) -> str:
+def to_csv(results: list[Result], extractor_name: str) -> str:
     """Convert a list of `Result` objects (which are essentially Python
     dictionaries) into a CSV string, including some useful Anki metadata."""
     csv_string: str = ""
@@ -14,7 +14,7 @@ def to_csv(results: list[Result]) -> str:
         output = io.StringIO()
         # First, manually write the Anki CSV header:
         sample_result = results[0]
-        output.write(anki_csv_header())
+        output.write(anki_csv_header(extractor_name))
         # Then initialize the csv writer, which does the hard work for us:
         csvwriter = csv.DictWriter(output, fieldnames=sample_result.keys())
         # Note that this is actually written as part of the Anki CSV header above:
@@ -26,13 +26,13 @@ def to_csv(results: list[Result]) -> str:
     return csv_string
 
 
-def anki_csv_header() -> str:
+def anki_csv_header(extractor_name: str) -> str:
     """Anki-specific CSV header data. See:
     https://docs.ankiweb.net/importing/text-files.html#file-headers"""
     return "\n".join(
         [
             "#separator:Comma",
-            "#tags:AnkiRobo",
+            f"#tags:AnkiRobo {extractor_name}",
             "#deck:AnkiRobo",
             "#columns:",  # we write the columns with our `csv` writer, above
         ]
