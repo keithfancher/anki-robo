@@ -47,9 +47,15 @@ def list_extractors_callback(args: argparse.Namespace) -> None:
 
 
 def extract_callback(args: argparse.Namespace) -> None:
-    local_testing = True  # TODO!
+    print(
+        f"Extracting data from source `{args.extractor}` using search keys from file: {args.infile}"
+    )
+    if args.test:
+        print("\nWARNING: test flag is set to TRUE, using local test data only")
+    print()
+
     try:
-        r = from_text_file(args.infile, args.extractor, local_testing)
+        r = from_text_file(args.infile, args.extractor, args.test)
         show_results(r)
         write_output(r, args.extractor, args.stdout)
     except robo.InvalidExtractorName:
@@ -86,6 +92,12 @@ def main() -> None:
         help="Write output CSV to standard out instead of a file",
         action="store_true",
     )
+    parser_get.add_argument(
+        "-t",
+        "--test",
+        help="Test using static local data rather than making remote calls",
+        action="store_true",
+    )
     parser_get.set_defaults(func=extract_callback)
 
     # If the user passes *no* commands, e.g. just calls `./ankirobo`, it
@@ -95,4 +107,4 @@ def main() -> None:
     if hasattr(args, "func"):
         args.func(args)
     else:
-        print("Try -h for usage information :D")
+        print("Please provide a command! Try -h for usage information :D")
