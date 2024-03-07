@@ -1,9 +1,9 @@
-import robo.extractors.linguee.french as linguee_fr
+import robo.extractors.linguee.french_english as linguee_fr_en
 from robo.types import Extractor, InvalidExtractorName
 
 # Map from: extractorName -> extract function
 extractors: dict[str, Extractor] = {
-    linguee_fr.NAME: linguee_fr.extract,
+    linguee_fr_en.NAME: linguee_fr_en.extract,
 }
 
 

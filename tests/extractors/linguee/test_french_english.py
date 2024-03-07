@@ -1,5 +1,5 @@
 import robo
-import robo.extractors.linguee.french as linguee_fr
+import robo.extractors.linguee.french_english as linguee_fr_en
 from robo.types import Result
 
 TESTING = True  # Clearly!
@@ -8,7 +8,7 @@ TESTING = True  # Clearly!
 def test_extract():
     # TODO: this can be a generic helper for any extractor, really...
     for key, expected_result in test_data.items():
-        result = robo.extract_one(linguee_fr.NAME, key, TESTING)
+        result = robo.extract_one(linguee_fr_en.NAME, key, TESTING)
         assert result == expected_result, f"extracted data mismatch for term: {key}"
 
 

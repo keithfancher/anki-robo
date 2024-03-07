@@ -1,14 +1,14 @@
 import robo.extractors.web as web
 from robo.types import Result
 
-NAME: str = "linguee-fr"
+NAME: str = "linguee-fr-en"
 
 
 # TODO: pull out functionality shared by ALL linguee pages/languages. Share!
 def extract(key: str, local_testing: bool) -> list[Result]:
     url = f"https://www.linguee.com/french-english/translation/{key}.html"
     soup = web.get_page_data(
-        key, url, local_testing, "linguee/french", encoding="ISO-8859-15"
+        key, url, local_testing, "linguee/french_english", encoding="ISO-8859-15"
     )
     if not soup:
         return []
