@@ -27,7 +27,7 @@ def data_from_term(key: str, term) -> dict[str, str]:
     # All the "common" corresponding english words. These are usually the ones
     # with example sentences as well.
     english_words_results = term.select("a.dictLink.featured")
-    english_words: list[str] = [r.string for r in english_words_results]
+    english_words: list[str] = [web.safe_string(r) for r in english_words_results]
 
     word_type = web.safe_string(term.select_one("span.tag_wordtype"))
 
@@ -74,6 +74,6 @@ def example_sentences(term) -> list[tuple[str, str]]:
 
 
 def example_pair_from_line(example_line) -> tuple[str, str]:
-    fr_sentence = example_line.find("span", class_="tag_s").string
-    en_sentence = example_line.find("span", class_="tag_t").string
+    fr_sentence = web.safe_string(example_line.find("span", class_="tag_s"))
+    en_sentence = web.safe_string(example_line.find("span", class_="tag_t"))
     return (fr_sentence, en_sentence)
