@@ -73,15 +73,26 @@ def main() -> None:
     parser_get = subparsers.add_parser(
         "get", aliases=["g"], help="Get Anki card data with the given extractor"
     )
-    parser_get.add_argument("extractor")
-    parser_get.add_argument("infile")
     parser_get.add_argument(
-        "--stdout",
+        "extractor",
+        help="The extractor to use. See all extractors with the `list` command.",
+    )
+    parser_get.add_argument(
+        "infile", help="Name of a file with newline-delimited input search keys."
+    )
+    parser_get.add_argument(
         "-s",
+        "--stdout",
         help="Write output CSV to standard out instead of a file",
         action="store_true",
     )
     parser_get.set_defaults(func=extract_callback)
 
+    # If the user passes *no* commands, e.g. just calls `./ankirobo`, it
+    # somehow is treated as a valid case, but the `func` callback doesn't exist
+    # so this throws. That seems broken to me? This workaround is fine for now.
     args = parser.parse_args()
-    args.func(args)
+    if hasattr(args, "func"):
+        args.func(args)
+    else:
+        print("Try -h for usage information :D")
