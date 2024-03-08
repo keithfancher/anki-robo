@@ -1,4 +1,4 @@
-.PHONY: all format lint typecheck test
+.PHONY: all format lint typecheck test coverage
 
 all: format typecheck lint
 
@@ -22,3 +22,7 @@ typecheck:
 
 test:
 	pytest
+
+coverage:
+	coverage run -m pytest
+	coverage html
