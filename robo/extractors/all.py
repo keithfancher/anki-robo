@@ -3,6 +3,7 @@ from robo.types import Extractor, InvalidExtractorName
 
 # Map from: extractorName -> extract function
 extractors: dict[str, Extractor] = {
+    linguee.ES_EN: linguee.make_extractor(("spanish", "english")),
     linguee.FR_EN: linguee.make_extractor(("french", "english")),
 }
 

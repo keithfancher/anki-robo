@@ -2,6 +2,7 @@ from typing import TypeAlias
 
 import robo.extractors.linguee.shared as linguee
 import tests.testdata.linguee.french_english.expected as linguee_fr_en
+import tests.testdata.linguee.spanish_english.expected as linguee_es_en
 from robo import Result, extract_one
 
 # Map from search key -> expected extraction results.
@@ -10,6 +11,7 @@ ExpectedResultSet: TypeAlias = dict[str, list[Result]]
 # Map from extractor name -> expected result set.
 # Simply add a line to this dictionary with your extractor test data.
 expected_results: dict[str, ExpectedResultSet] = {
+    linguee.ES_EN: linguee_es_en.expected_results,
     linguee.FR_EN: linguee_fr_en.expected_results,
 }
 
