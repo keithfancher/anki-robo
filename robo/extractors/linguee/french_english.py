@@ -26,15 +26,13 @@ def extract(key: str, local_testing: bool) -> list[Result]:
 def data_from_term(key: str, term) -> dict[str, str]:
     # All the "common" corresponding english words. These are usually the ones
     # with example sentences as well.
-    english_words_results = term.select("a.dictLink.featured")
-    english_words: list[str] = [web.safe_string(r) for r in english_words_results]
+    english_words = get_english_words(term)
 
+    # aka "part of speech":
     word_type = web.safe_string(term.select_one("span.tag_wordtype"))
 
     # Note use of `strings` here, plural. There's a whole tree of elements and
     # we just want the contained text.
-    #
-    # TODO: Better split apart and format these other forms.
     other_forms = web.safe_strings(
         term.select_one("h2.line.lemma_desc > span.tag_forms")
     )
@@ -58,6 +56,20 @@ def data_from_term(key: str, term) -> dict[str, str]:
         "french_sentence": french_sentence,
         "english_sentence": english_sentence,
     }
+
+
+def get_english_words(term) -> list[str]:
+    english_words_results = term.select("a.dictLink.featured")
+    results = []
+    for english_phrase in english_words_results:
+        # Note use of `safe_strings` (plural) here. It's possible there's a
+        # tree of elements and containing text here for a single English
+        # phrase. BS gives us a list of strings and we join for our final phrase.
+        phrase_words = web.safe_strings(english_phrase)
+        phrase = "".join(phrase_words)
+        if phrase:
+            results.append(phrase)
+    return results
 
 
 def example_sentences(term) -> list[tuple[str, str]]:

@@ -57,6 +57,18 @@ oreiller_results = [
     },
 ]
 
+pister_results = [
+    {
+        "input": "pister",
+        "english": "track sb./sth., trail sb./sth.",
+        "word_type": "verb",
+        "other_forms": "",
+        "english_sentence": "The policeman tracked the burglar all the way to his hideout.",
+        "french_sentence": "Le policier a pisté le cambrioleur jusqu'à sa cachette.",
+    },
+]
+
+
 tonnerre_results = [
     {
         "input": "tonnerre",
@@ -75,5 +87,6 @@ test_data: dict[str, list[Result]] = {
     "flâner": flaner_results,
     "hilarant": hilarant_results,
     "oreiller": oreiller_results,
+    "pister": pister_results,
     "tonnerre": tonnerre_results,
 }
