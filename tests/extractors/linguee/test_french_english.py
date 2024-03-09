@@ -1,5 +1,5 @@
 import robo
-import robo.extractors.linguee.french_english as linguee_fr_en
+import robo.extractors.linguee.shared as linguee
 from robo.types import Result
 
 TESTING = True  # Clearly!
@@ -12,7 +12,7 @@ def test_extract():
     # diff between the two objects unless we leave the assertion in this
     # module. Be great to figure out why that is...
     for key, expected_result in expected_results.items():
-        result = robo.extract_one(linguee_fr_en.NAME, key, TESTING)
+        result = robo.extract_one(linguee.FR_EN, key, TESTING)
         assert result == expected_result, f"extracted data mismatch for term: {key}"
 
 

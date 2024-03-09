@@ -1,9 +1,9 @@
-import robo.extractors.linguee.french_english as linguee_fr_en
+import robo.extractors.linguee.shared as linguee
 from robo.types import Extractor, InvalidExtractorName
 
 # Map from: extractorName -> extract function
 extractors: dict[str, Extractor] = {
-    linguee_fr_en.NAME: linguee_fr_en.extract,
+    linguee.FR_EN: linguee.make_extractor(("french", "english")),
 }
 
 

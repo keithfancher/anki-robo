@@ -1,10 +1,10 @@
 import robo
-import robo.extractors.linguee.french_english as linguee
+import robo.extractors.linguee.shared as linguee
 
 
 # Attempt to exercise as much as possible of the `robo` library's modules.
 def test_robo_lib_api():
-    extractor_name = linguee.NAME
+    extractor_name = linguee.FR_EN
     local_testing = True
 
     in_list = "encre\nflâner\nasdfblah"

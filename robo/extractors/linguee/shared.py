@@ -1,26 +1,38 @@
 import robo.extractors.web as web
-from robo.types import Result
+from robo.types import Extractor, Result
 
-NAME: str = "linguee-fr-en"
+# Extractor names
+FR_EN = "linguee-fr-en"
 
 
-# TODO: pull out functionality shared by ALL linguee pages/languages. Share!
-def extract(key: str, local_testing: bool) -> list[Result]:
-    url = f"https://www.linguee.com/french-english/translation/{key}.html"
-    soup = web.get_page_data(
-        key, url, local_testing, "linguee/french_english", encoding="ISO-8859-15"
-    )
-    if not soup:
-        return []
+# TODO: remove specific references to "french" and "english" in the actual
+# extractor code, make generic/language-agnostic.
+def make_extractor(language_pair: tuple[str, str]) -> Extractor:
+    """Generates a Linguee extractor for any language pair which Linguee
+    supports. For example, `("french", "english")` for an extractor used to
+    look up French words."""
+    url_lang = "-".join(language_pair)  # e.g. "french-english"
+    test_data_dir = "_".join(language_pair)  # e.g. "french_english"
+    url_base = f"https://www.linguee.com/{url_lang}/translation"
 
-    term_matches = soup.select("div#dictionary div.lemma.featured")
-    if term_matches:
-        # Get only the first matching term. This prevents situations where,
-        # e.g., if you search "encre", you also get "encrer" in the results.
-        first_match = term_matches[0]
-        return [data_from_term(key, first_match)]
-    else:
-        return []
+    def extract(key: str, local_testing: bool) -> list[Result]:
+        url = f"{url_base}/{key}.html"
+        soup = web.get_page_data(
+            key, url, local_testing, f"linguee/{test_data_dir}", encoding="ISO-8859-15"
+        )
+        if not soup:
+            return []
+
+        term_matches = soup.select("div#dictionary div.lemma.featured")
+        if term_matches:
+            # Get only the first matching term. This prevents situations where,
+            # e.g., if you search "encre", you also get "encrer" in the results.
+            first_match = term_matches[0]
+            return [data_from_term(key, first_match)]
+        else:
+            return []
+
+    return extract
 
 
 def data_from_term(key: str, term) -> dict[str, str]:
