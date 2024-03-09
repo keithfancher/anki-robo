@@ -16,5 +16,5 @@ def get_extractor(name: str) -> Extractor:
         raise InvalidExtractorName
 
 
-def get_extractor_names() -> set[str]:
-    return set(extractors.keys())
+def get_extractor_names() -> list[str]:
+    return sorted(set(extractors.keys()))
