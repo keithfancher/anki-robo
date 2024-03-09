@@ -6,8 +6,12 @@ TESTING = True  # Clearly!
 
 
 def test_extract():
-    # TODO: this can be a generic helper for any extractor, really...
-    for key, expected_result in test_data.items():
+    # TODO: In THEORY, this can be a generic helper for any extractor. But in
+    # practice, unless the assertion lives in this module it seems like we lose
+    # all the context. So, e.g., if the test fails, pytest will not show the
+    # diff between the two objects unless we leave the assertion in this
+    # module. Be great to figure out why that is...
+    for key, expected_result in expected_results.items():
         result = robo.extract_one(linguee_fr_en.NAME, key, TESTING)
         assert result == expected_result, f"extracted data mismatch for term: {key}"
 
@@ -82,7 +86,7 @@ tonnerre_results = [
 
 
 # A mapping of term -> expected output
-test_data: dict[str, list[Result]] = {
+expected_results: dict[str, list[Result]] = {
     "encre": encre_results,
     "flâner": flaner_results,
     "hilarant": hilarant_results,
