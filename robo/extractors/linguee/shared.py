@@ -5,8 +5,6 @@ from robo.types import Extractor, Result
 FR_EN = "linguee-fr-en"
 
 
-# TODO: remove specific references to "french" and "english" in the actual
-# extractor code, make generic/language-agnostic.
 def make_extractor(language_pair: tuple[str, str]) -> Extractor:
     """Generates a Linguee extractor for any language pair which Linguee
     supports. For example, `("french", "english")` for an extractor used to
@@ -35,49 +33,72 @@ def make_extractor(language_pair: tuple[str, str]) -> Extractor:
     return extract
 
 
+def make_linguee_result(
+    input: str,
+    translation: str,
+    part_of_speech: str,
+    other_forms: str,
+    ex_sentence: str,
+    ex_sentence_translation: str,
+) -> Result:
+    """A simple wrapper to ensure I only have to change these key names in one
+    place, in the event they need to change. Again."""
+    return {
+        "input": input,
+        "translation": translation,
+        "part_of_speech": part_of_speech,
+        "other_forms": other_forms,
+        "example_sentence": ex_sentence,
+        "example_sentence_translation": ex_sentence_translation,
+    }
+
+
 def data_from_term(key: str, term) -> dict[str, str]:
-    # All the "common" corresponding english words. These are usually the ones
+    # All the "common" corresponding translations. These are usually the ones
     # with example sentences as well.
-    english_words = get_english_words(term)
+    translations = get_translations(term)
 
-    # aka "part of speech":
-    word_type = web.safe_string(term.select_one("span.tag_wordtype"))
+    part_of_speech = web.safe_string(term.select_one("span.tag_wordtype"))
 
+    # Other forms of the word that might exist. For example: "hilarant" has
+    # "hilarante, hilarants", etc.
     # Note use of `strings` here, plural. There's a whole tree of elements and
     # we just want the contained text.
     other_forms = web.safe_strings(
         term.select_one("h2.line.lemma_desc > span.tag_forms")
     )
 
-    # List of tuples in the form: (French sentence, English sentence)
+    # List of tuples in the form: (target-language sentence, sentence translation)
     example_sentence_pairs: list[tuple[str, str]] = example_sentences(term)
 
-    french_sentence: str = ""
-    english_sentence: str = ""
+    example_sentence: str = ""
+    example_sentence_translation: str = ""
     if example_sentence_pairs:
-        # Just getting the FIRST example pair for now. Later, we can decide how
-        # to provide multiple options.
-        french_sentence = example_sentence_pairs[0][0]
-        english_sentence = example_sentence_pairs[0][1]
+        # Just getting the FIRST example sentence pair for now. Later, we can
+        # decide how to provide multiple options.
+        example_sentence = example_sentence_pairs[0][0]
+        example_sentence_translation = example_sentence_pairs[0][1]
 
-    return {
-        "input": key,
-        "english": ", ".join(english_words),
-        "word_type": word_type,
-        "other_forms": "".join(other_forms).strip(),
-        "french_sentence": french_sentence,
-        "english_sentence": english_sentence,
-    }
+    return make_linguee_result(
+        input=key,
+        translation=", ".join(translations),
+        part_of_speech=part_of_speech,
+        other_forms="".join(other_forms).strip(),
+        ex_sentence=example_sentence,
+        ex_sentence_translation=example_sentence_translation,
+    )
 
 
-def get_english_words(term) -> list[str]:
-    english_words_results = term.select("a.dictLink.featured")
+def get_translations(term) -> list[str]:
+    """Get a list of possible translations for the term. For example, if the
+    search key is "tormenta", this function might return ["storm", "thunderstorm"]."""
+    raw_translation_results = term.select("a.dictLink.featured")
     results = []
-    for english_phrase in english_words_results:
+    for translation_phrase in raw_translation_results:
         # Note use of `safe_strings` (plural) here. It's possible there's a
-        # tree of elements and containing text here for a single English
+        # tree of elements and containing text here for a single translation
         # phrase. BS gives us a list of strings and we join for our final phrase.
-        phrase_words = web.safe_strings(english_phrase)
+        phrase_words = web.safe_strings(translation_phrase)
         phrase = "".join(phrase_words)
         if phrase:
             results.append(phrase)
@@ -85,6 +106,9 @@ def get_english_words(term) -> list[str]:
 
 
 def example_sentences(term) -> list[tuple[str, str]]:
+    """Get a list of all the "curated" example sentences Linguee provides. This
+    does NOT include the "unchecked" example sentences they source from random
+    places on the internet."""
     example_lines_selector = (
         "div.translation.sortablemg.featured > div.example_lines > div.example.line"
     )
@@ -98,6 +122,9 @@ def example_sentences(term) -> list[tuple[str, str]]:
 
 
 def example_pair_from_line(example_line) -> tuple[str, str]:
-    fr_sentence = web.safe_string(example_line.find("span", class_="tag_s"))
-    en_sentence = web.safe_string(example_line.find("span", class_="tag_t"))
-    return (fr_sentence, en_sentence)
+    """Returns a tuple consisting of one example sentence in the target
+    language (e.g. French, if you're looking up a French word) and its
+    translation."""
+    ex_sentence = web.safe_string(example_line.find("span", class_="tag_s"))
+    ex_sentence_translation = web.safe_string(example_line.find("span", class_="tag_t"))
+    return (ex_sentence, ex_sentence_translation)

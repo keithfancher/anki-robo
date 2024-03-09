@@ -17,71 +17,71 @@ def test_extract():
 
 
 encre_results = [
-    {
-        "input": "encre",
-        "english": "ink",
-        "word_type": "noun,\xa0feminine",
-        "other_forms": "",
-        "english_sentence": "I prefer to write with blue ink on white paper.",
-        "french_sentence": "Je préfère écrire à l'encre bleue sur papier blanc.",
-    },
+    linguee.make_linguee_result(
+        input="encre",
+        translation="ink",
+        part_of_speech="noun,\xa0feminine",
+        other_forms="",
+        ex_sentence="Je préfère écrire à l'encre bleue sur papier blanc.",
+        ex_sentence_translation="I prefer to write with blue ink on white paper.",
+    )
 ]
 
 
 flaner_results = [
-    {
-        "input": "flâner",
-        "english": "stroll, wander",
-        "word_type": "verb",
-        "other_forms": "",
-        "english_sentence": "She wandered along the beach.",
-        "french_sentence": "Elle flânait le long de la plage.",
-    }
+    linguee.make_linguee_result(
+        input="flâner",
+        translation="stroll, wander",
+        part_of_speech="verb",
+        other_forms="",
+        ex_sentence="Elle flânait le long de la plage.",
+        ex_sentence_translation="She wandered along the beach.",
+    )
 ]
 
 hilarant_results = [
-    {
-        "input": "hilarant",
-        "english": "hilarious",
-        "word_type": "adjective, masculine",
-        "other_forms": "(hilarante f sl, hilarants m pl, hilarantes f pl)",
-        "english_sentence": "He makes me laugh with hilarious stories.",
-        "french_sentence": "Il me fait rire avec des histoires hilarantes.",
-    },
+    linguee.make_linguee_result(
+        input="hilarant",
+        translation="hilarious",
+        part_of_speech="adjective, masculine",
+        other_forms="(hilarante f sl, hilarants m pl, hilarantes f pl)",
+        ex_sentence="Il me fait rire avec des histoires hilarantes.",
+        ex_sentence_translation="He makes me laugh with hilarious stories.",
+    )
 ]
 
 oreiller_results = [
-    {
-        "input": "oreiller",
-        "english": "pillow",
-        "word_type": "noun,\xa0masculine",
-        "other_forms": "(plural: oreillers m)",
-        "english_sentence": "The pillows on my bed are very soft.",
-        "french_sentence": "Les oreillers sur mon lit sont très moelleux.",
-    },
+    linguee.make_linguee_result(
+        input="oreiller",
+        translation="pillow",
+        part_of_speech="noun,\xa0masculine",
+        other_forms="(plural: oreillers m)",
+        ex_sentence="Les oreillers sur mon lit sont très moelleux.",
+        ex_sentence_translation="The pillows on my bed are very soft.",
+    )
 ]
 
 pister_results = [
-    {
-        "input": "pister",
-        "english": "track sb./sth., trail sb./sth.",
-        "word_type": "verb",
-        "other_forms": "",
-        "english_sentence": "The policeman tracked the burglar all the way to his hideout.",
-        "french_sentence": "Le policier a pisté le cambrioleur jusqu'à sa cachette.",
-    },
+    linguee.make_linguee_result(
+        input="pister",
+        translation="track sb./sth., trail sb./sth.",
+        part_of_speech="verb",
+        other_forms="",
+        ex_sentence="Le policier a pisté le cambrioleur jusqu'à sa cachette.",
+        ex_sentence_translation="The policeman tracked the burglar all the way to his hideout.",
+    )
 ]
 
 
 tonnerre_results = [
-    {
-        "input": "tonnerre",
-        "english": "thunder",
-        "word_type": "noun,\xa0masculine",
-        "other_forms": "",
-        "english_sentence": "We heard a crash of thunder far away.",
-        "french_sentence": "Nous avons entendu un coup de tonnerre au loin.",
-    },
+    linguee.make_linguee_result(
+        input="tonnerre",
+        translation="thunder",
+        part_of_speech="noun,\xa0masculine",
+        other_forms="",
+        ex_sentence="Nous avons entendu un coup de tonnerre au loin.",
+        ex_sentence_translation="We heard a crash of thunder far away.",
+    )
 ]
 
 
