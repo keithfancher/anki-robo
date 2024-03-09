@@ -67,6 +67,7 @@ all of our configured data sources:
 
 ```
 $ ./ankirobo list
+linguee-es-en
 linguee-fr-en
 ```
 
@@ -91,8 +92,9 @@ learning my new words!
 
 ## What data sources are available?
 
-Right now, just one: [Linguee
-French/English](https://www.linguee.com/french-english/). I'm working on
+Right now, just two: [Linguee
+French/English](https://www.linguee.com/french-english/) and [Linguee
+Spanish/English](https://www.linguee.com/spanish-english/). I'm working on
 others.
 
 ## I'd like to contribute / set up a new data source
