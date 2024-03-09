@@ -1,20 +1,5 @@
-import robo
 import robo.extractors.linguee.shared as linguee
 from robo.types import Result
-
-TESTING = True  # Clearly!
-
-
-def test_extract():
-    # TODO: In THEORY, this can be a generic helper for any extractor. But in
-    # practice, unless the assertion lives in this module it seems like we lose
-    # all the context. So, e.g., if the test fails, pytest will not show the
-    # diff between the two objects unless we leave the assertion in this
-    # module. Be great to figure out why that is...
-    for key, expected_result in expected_results.items():
-        result = robo.extract_one(linguee.FR_EN, key, TESTING)
-        assert result == expected_result, f"extracted data mismatch for term: {key}"
-
 
 encre_results = [
     linguee.make_linguee_result(
@@ -26,7 +11,6 @@ encre_results = [
         ex_sentence_translation="I prefer to write with blue ink on white paper.",
     )
 ]
-
 
 flaner_results = [
     linguee.make_linguee_result(
@@ -72,7 +56,6 @@ pister_results = [
     )
 ]
 
-
 tonnerre_results = [
     linguee.make_linguee_result(
         input="tonnerre",
@@ -83,7 +66,6 @@ tonnerre_results = [
         ex_sentence_translation="We heard a crash of thunder far away.",
     )
 ]
-
 
 # A mapping of term -> expected output
 expected_results: dict[str, list[Result]] = {
