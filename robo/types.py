@@ -28,7 +28,6 @@ class ResultSummary:
         results and successes."""
         if new_results:
             # I guess mutable state is the way in Python? :')
-            # Probably need to revisit this once we deal in parallelism :') :') :')
             self.results += new_results
             self.results_success.add(key)
         else:
