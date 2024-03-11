@@ -81,21 +81,24 @@ def main() -> None:
     )
     parser_get.add_argument(
         "extractor",
+        metavar="EXTRACTOR_NAME",
         help="The extractor to use. See all extractors with the `list` command.",
     )
     parser_get.add_argument(
-        "infile", help="Name of a file with newline-delimited input search keys."
+        "infile",
+        metavar="INPUT_FILE",
+        help="Name of a file with newline-delimited input search keys.",
     )
     parser_get.add_argument(
         "-s",
         "--stdout",
-        help="Write output CSV to standard out instead of a file",
+        help="write output CSV to standard out instead of a file",
         action="store_true",
     )
     parser_get.add_argument(
         "-t",
         "--test",
-        help="Test using static local data rather than making remote calls",
+        help="test using static local data rather than making remote calls",
         action="store_true",
     )
     parser_get.set_defaults(func=extract_callback)
