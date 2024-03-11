@@ -70,7 +70,7 @@ async def extract_list_parallel(
             return await loop.run_in_executor(pool, extract_key_and_result, k)
 
         async_results = map(async_extract, keys)
-        results = await asyncio.gather(*async_results)
+        results: list[tuple[str, list[Result]]] = await asyncio.gather(*async_results)
 
     results_summary = empty_summary()
     for k, r in results:
