@@ -1,5 +1,7 @@
 import asyncio
 import concurrent.futures
+from dataclasses import dataclass
+from typing import Optional
 
 import robo.extractors as extractors
 from robo.types import Result, ResultSummary
@@ -23,18 +25,32 @@ def extract_one(extractor_name: str, key: str, local_testing: bool) -> list[Resu
     return extract(key.strip(), local_testing)
 
 
+@dataclass
+class RoboOpts:
+    # Set to `True` to test using local data rather than hitting remote sources.
+    local_testing: bool
+
+    # Maximum number of `extract` operations to run in parallel. If `None`, we
+    # allow Python to pick a reasonable max based on your CPU.
+    max_parallel: Optional[int] = DEFAULT_MAX_WORKERS
+
+    # Run at most `limit` `extract` operations, regardless of the size of the
+    # incoming list. If `None`, we impose no limit.
+    # TODO: WARNING: Not actually implemented yet!
+    limit: Optional[int] = None
+
+
 def extract_list(
     extractor_name: str,
     keys: list[str],
-    local_testing: bool,
-    num_parallel=DEFAULT_MAX_WORKERS,
+    opts: RoboOpts,
 ) -> ResultSummary:
     """Fetch the given `Extractor` by name and use it to extract data for the
-    given list of search keys, running up to `num_parallel` threads in
-    parallel. If `local_testing` is `True`, attempt to use local test data
-    instead of hitting a remote source."""
+    given list of search keys. Use `opts` to alter extractor behavior."""
     return asyncio.run(
-        extract_list_parallel(extractor_name, keys, local_testing, num_parallel)
+        extract_list_parallel(
+            extractor_name, keys, opts.local_testing, opts.max_parallel
+        )
     )
 
 
@@ -48,10 +64,14 @@ def extract_list(
 # to think about it at all, nor do they have to worry about using only
 # libraries which support `asyncio` out of the box.
 async def extract_list_parallel(
-    extractor_name: str, keys: list[str], local_testing: bool, num_parallel: int
+    extractor_name: str,
+    keys: list[str],
+    local_testing: bool,
+    num_parallel: Optional[int],
 ) -> ResultSummary:
     """Execute the given extractor against the list of search keys, running up
-    to `num_parallel` threads in parallel."""
+    to `num_parallel` threads in parallel. Passing `None` for `num_parallel`
+    will use Python's default maximum value, which depends on your CPU."""
     extract = extractors.get_extractor(extractor_name)
 
     # Simple wrapper to pair an `extract` result with its key. Useful for gathering

@@ -5,11 +5,11 @@ import robo
 
 
 def from_text_file(
-    filename: str, extractor_name: str, local_testing: bool
+    filename: str, extractor_name: str, opts: robo.RoboOpts
 ) -> robo.ResultSummary:
     with open(filename, "r") as f:
         contents = f.read()
-    return robo.from_plaintext(contents, extractor_name, local_testing)
+    return robo.from_plaintext(contents, extractor_name, opts)
 
 
 def show_results(results: robo.ResultSummary) -> None:
@@ -41,6 +41,17 @@ def write_output(
         print("Complete!")
 
 
+def make_opts(args: argparse.Namespace) -> robo.RoboOpts:
+    if args.parallel < 0:
+        raise ValueError("`parallel` value must be >= 0")
+    elif args.parallel == 0:
+        # 0 on the CLI is equivalent to `None`, aka "let Python decide the limit"
+        args.parallel = None
+    return robo.RoboOpts(
+        local_testing=args.test, max_parallel=args.parallel, limit=None
+    )
+
+
 def list_extractors_callback(args: argparse.Namespace) -> None:
     for extractor_name in robo.get_extractor_names():
         print(extractor_name)
@@ -55,7 +66,7 @@ def extract_callback(args: argparse.Namespace) -> None:
     print()
 
     try:
-        r = from_text_file(args.infile, args.extractor, args.test)
+        r = from_text_file(args.infile, args.extractor, make_opts(args))
         show_results(r)
         write_output(r, args.extractor, args.stdout)
     except robo.InvalidExtractorName:
@@ -100,6 +111,14 @@ def main() -> None:
         "--test",
         help="test using static local data rather than making remote calls",
         action="store_true",
+    )
+    parser_get.add_argument(
+        "-p",
+        "--parallel",
+        type=int,
+        metavar="NUM_WORKERS",
+        default=robo.DEFAULT_MAX_WORKERS,
+        help=f"maximum number of workers running in parallel (default is {robo.DEFAULT_MAX_WORKERS}; use 0 for Python's default limit, which depends on your CPU)",
     )
     parser_get.set_defaults(func=extract_callback)
 
