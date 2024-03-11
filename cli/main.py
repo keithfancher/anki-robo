@@ -84,7 +84,7 @@ def main() -> None:
     parser_list = subparsers.add_parser(
         "list", aliases=["l"], help="List all available data extractors"
     )
-    parser_list.set_defaults(func=list_extractors_callback)
+    parser_list.set_defaults(callback=list_extractors_callback)
 
     # `get` subcommand: get Anki data with a given extractor
     parser_get = subparsers.add_parser(
@@ -120,13 +120,13 @@ def main() -> None:
         default=robo.DEFAULT_MAX_WORKERS,
         help=f"maximum number of workers running in parallel (default is {robo.DEFAULT_MAX_WORKERS}; use 0 for Python's default limit, which depends on your CPU)",
     )
-    parser_get.set_defaults(func=extract_callback)
+    parser_get.set_defaults(callback=extract_callback)
 
-    # If the user passes *no* commands, e.g. just calls `./ankirobo`, it
-    # somehow is treated as a valid case, but the `func` callback doesn't exist
-    # so this throws. That seems broken to me? This workaround is fine for now.
+    # If the user passes *no* commands, e.g. just calls `./ankirobo`, it somehow
+    # is treated as a valid case, but the `callback` property doesn't exist, so
+    # this throws. That seems broken to me? This workaround is fine for now.
     args = parser.parse_args()
-    if hasattr(args, "func"):
-        args.func(args)
+    if hasattr(args, "callback"):
+        args.callback(args)
     else:
         print("Please provide a command! Try -h for usage information :D")
