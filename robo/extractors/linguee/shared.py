@@ -2,6 +2,7 @@ import robo.extractors.web as web
 from robo.types import Extractor, Result
 
 # Extractor names
+DE_EN = "linguee-de-en"
 ES_EN = "linguee-es-en"
 FR_EN = "linguee-fr-en"
 
