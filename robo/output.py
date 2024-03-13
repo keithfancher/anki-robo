@@ -1,5 +1,6 @@
 import csv
 import io
+import json
 
 from robo.types import Result
 
@@ -37,3 +38,12 @@ def anki_csv_header(extractor_name: str) -> str:
             "#columns:",  # we write the columns with our `csv` writer, above
         ]
     )
+
+
+def to_json(results: list[Result], pretty: bool = True) -> str:
+    """JSONify the given results."""
+    if pretty:
+        indent = 2
+    else:
+        indent = None
+    return json.dumps(results, indent=indent)
