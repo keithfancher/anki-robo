@@ -3,7 +3,9 @@ from datetime import datetime
 import robo
 
 
-def extract(extractor_name: str, infile: str, opts: robo.RoboOpts, stdout: bool):
+def extract(
+    extractor_name: str, infile: str, opts: robo.RoboOpts, stdout: bool
+) -> None:
     """The main `extract` operation. Ties the pieces together, extracts the
     data, and gives results back to the user."""
     print(
@@ -21,6 +23,12 @@ def extract(extractor_name: str, infile: str, opts: robo.RoboOpts, stdout: bool)
         print("Invalid extractor name: " + extractor_name)
     except FileNotFoundError:
         print("Input file not found: " + infile)
+
+
+def extract_one(extractor_name: str, search_key: str, local_testing: bool) -> None:
+    """Quick way to extract data for a single search key."""
+    results = robo.extract_one(extractor_name, search_key, local_testing)
+    print(robo.to_json(results))
 
 
 def from_text_file(

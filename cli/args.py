@@ -12,6 +12,7 @@ def parse(args: Optional[list[str]] = None) -> argparse.Namespace:
     subparsers = parser.add_subparsers(help="Available anki-robo commands")
     add_list_command_parser(subparsers)
     add_get_command_parser(subparsers)
+    add_one_command_parser(subparsers)
 
     return parser.parse_args(args)
 
@@ -55,6 +56,32 @@ def add_get_command_parser(subparsers) -> None:
     parser_get.set_defaults(callback=extract_callback)
 
 
+def add_one_command_parser(subparsers) -> None:
+    """Note: changes `subparsers` parameter in-place :')"""
+    # `one` subcommand: extract data for a single search key
+    parser_one = subparsers.add_parser(
+        "one", aliases=["o"], help="Get data for a single search key"
+    )
+    # TODO: factor out the shared arguments?
+    parser_one.add_argument(
+        "extractor",
+        metavar="EXTRACTOR_NAME",
+        help="The extractor to use. See all extractors with the `list` command.",
+    )
+    parser_one.add_argument(
+        "search_key",
+        metavar="SEARCH_KEY",
+        help="The search key to fetch data for.",
+    )
+    parser_one.add_argument(
+        "-t",
+        "--test",
+        help="test using static local data rather than making remote calls",
+        action="store_true",
+    )
+    parser_one.set_defaults(callback=extract_single_callback)
+
+
 def add_list_command_parser(subparsers) -> None:
     """Note: changes `subparsers` parameter in-place :')"""
     # `list` subcommand: show all available extractors
@@ -83,3 +110,7 @@ def list_extractors_callback(args: argparse.Namespace) -> None:
 
 def extract_callback(args: argparse.Namespace) -> None:
     ops.extract(args.extractor, args.infile, make_opts(args), args.stdout)
+
+
+def extract_single_callback(args: argparse.Namespace) -> None:
+    ops.extract_one(args.extractor, args.search_key, args.test)
