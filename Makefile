@@ -21,7 +21,8 @@ typecheck:
 	@echo "Done\n"
 
 test:
-	pytest
+	@# 2 levels of verbosity gives great diffs between expected/actual results:
+	pytest -vv
 
 coverage:
 	coverage run -m pytest
