@@ -2,7 +2,7 @@ import csv
 import io
 import json
 
-from robo.types import Result
+from ankirobo.types import Result
 
 
 def to_csv(results: list[Result], extractor_name: str) -> str:

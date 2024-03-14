@@ -1,6 +1,6 @@
 from datetime import datetime
 
-import robo
+import ankirobo as robo
 
 
 def extract(

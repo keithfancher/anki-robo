@@ -1,5 +1,5 @@
-import robo.extractors.web as web
-from robo.types import Extractor, Result
+import ankirobo.extractors.web as web
+from ankirobo.types import Extractor, Result
 
 # Extractor names
 DE_EN = "linguee-de-en"

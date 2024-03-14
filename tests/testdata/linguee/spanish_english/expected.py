@@ -1,5 +1,5 @@
-import robo.extractors.linguee.shared as linguee
-from robo.types import Result
+import ankirobo.extractors.linguee.shared as linguee
+from ankirobo.types import Result
 
 calavera_results = [
     linguee.make_linguee_result(

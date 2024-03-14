@@ -1,5 +1,5 @@
-import robo.extractors.linguee.shared as linguee
-from robo.types import Extractor, InvalidExtractorName
+import ankirobo.extractors.linguee.shared as linguee
+from ankirobo.types import Extractor, InvalidExtractorName
 
 # Map from: extractorName -> extract function
 extractors: dict[str, Extractor] = {

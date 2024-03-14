@@ -3,8 +3,8 @@ import concurrent.futures
 from dataclasses import dataclass
 from typing import Optional
 
-import robo.extractors as extractors
-from robo.types import Result, ResultSummary
+import ankirobo.extractors as extractors
+from ankirobo.types import Result, ResultSummary
 
 # The default amount of parallelism.
 #

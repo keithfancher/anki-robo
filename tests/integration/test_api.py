@@ -1,5 +1,5 @@
-import robo
-import robo.extractors.linguee.shared as linguee
+import ankirobo as robo
+import ankirobo.extractors.linguee.shared as linguee
 
 
 # Attempt to exercise as much as possible of the `robo` library's modules.

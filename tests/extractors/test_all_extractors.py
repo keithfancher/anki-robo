@@ -1,10 +1,10 @@
 from typing import TypeAlias
 
-import robo.extractors.linguee.shared as linguee
+import ankirobo.extractors.linguee.shared as linguee
 import tests.testdata.linguee.french_english.expected as linguee_fr_en
 import tests.testdata.linguee.german_english.expected as linguee_de_en
 import tests.testdata.linguee.spanish_english.expected as linguee_es_en
-from robo import Result, extract_one
+from ankirobo import Result, extract_one
 
 # Map from search key -> expected extraction results.
 ExpectedResultSet: TypeAlias = dict[str, list[Result]]

@@ -1,5 +1,5 @@
-from robo.api import RoboOpts, extract_list
-from robo.types import ResultSummary
+from ankirobo.api import RoboOpts, extract_list
+from ankirobo.types import ResultSummary
 
 
 def from_plaintext(text: str, extractor_name: str, opts: RoboOpts) -> ResultSummary:
