@@ -1,8 +1,10 @@
+import ankirobo.extractors.jotoba as jotoba
 import ankirobo.extractors.linguee.shared as linguee
 from ankirobo.types import Extractor, InvalidExtractorName
 
 # Map from: extractorName -> extract function
 extractors: dict[str, Extractor] = {
+    jotoba.NAME: jotoba.extract,
     linguee.DE_EN: linguee.make_extractor(("german", "english")),
     linguee.ES_EN: linguee.make_extractor(("spanish", "english")),
     linguee.FR_EN: linguee.make_extractor(("french", "english")),
