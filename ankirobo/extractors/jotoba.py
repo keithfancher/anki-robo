@@ -1,63 +1,153 @@
-import ankirobo.extractors.web as web
+from dataclasses import dataclass
+from typing import cast
+
+import ankirobo.extractors.api as api
 from ankirobo.types import Result
 
 NAME = "jotoba-jp-en"
 
+# Default settings. Required for POSTing to the Jotoba API. See:
+# https://github.com/WeDontPanic/Jotoba/blob/dev/lib/types/src/api/app/search/query.rs#L37
+# ...which is the Rust representation of this object.
+JOTOBA_SETTINGS = {
+    "user_lang": "en-US",
+    "show_english": True,
+    "page_size": 5,  # We only need a result or two, probably...
+    "show_example_sentences": True,
+    "sentence_furigana": False, # Seems to have no effect
+}
+
+# Sample `curl` call to hit this API:
+# ```
+# curl -X POST "https://jotoba.de/api/app/words" \
+#  -H "accept: application/json" \
+#  -H "content-type: application/json" \
+#  -d '{"query_str":"ぴかぴか", "settings": {"user_lang": "en-US", "show_english": true, "page_size": 5, "show_example_sentences": true, "sentence_furigana": false}}'
+# ```
+#
+# Note that this is NOT the "official" public API which is documented here:
+# https://jotoba.de/docs.html
+# That one ^ is missing certain data we need, like JLPT level and a "curated"
+# example sentence.
+#
+# The API we're using here is (I believe) an internal API, so it could likely
+# change without notice. That said, it has all the data we need!
+
 
 def extract(key: str, local_testing: bool) -> list[Result]:
-    url = f"https://jotoba.com/search/0/{key}?l=en-US"
+    url = "https://jotoba.de/api/app/words"
+    data = {"query_str": key, "settings": JOTOBA_SETTINGS}
 
-    soup = web.get_page_data(key, url, local_testing, "jotoba")
-    print(soup) # TODO
-    if not soup:
+    response = api.api_post(key, url, data, local_testing, "jotoba")
+    if not isinstance(response, dict):
         return []
 
-    # TODO: use `find` instead of select? BS docs say selectors will be slower than BS API
-    word_entries = soup.select("div#mainBody div.word-entry")
-    print(word_entries) # TODO
-    if not word_entries:
+    # I thought type-narrowing would apply here? But it doesn't seem to? Hence cast:
+    response = cast(dict, response)
+    if "content" in response and "words" in response["content"]:
+        words = response["content"]["words"]
+    else:
+        words = []
+
+    if words:
+        # We only care about the top result:
+        parsed_word = parse_word(words[0])
+        return [to_result(parsed_word)]
+    else:
         return []
 
-    return [data_from_word_entry(word_entries[0])]
+
+@dataclass
+class Word:
+    term: str
+    translation: str
+    example_sentence: str
+    example_sentence_translation: str
+    tags: list[str]
 
 
-def data_from_word_entry(soup) -> Result:
-    entry_head = soup.find("div", class_="entry-head")
-    result_term_raw = web.safe_strings(entry_head.select_one("h1 > ruby.quick"))
-    result_term = "".join(result_term_raw)
+@dataclass
+class Sense:
+    glosses: str
+    example_sentence: list[str]  # or maybe a tuple?
 
-    # TODO: get tags from entry head as well ("common" and jlpt level)
 
-    senses = soup.find_all("div", class_="sense")
+@dataclass
+class MergedSenses:
+    translation: str
+    example_sentence: str
+    example_sentence_translation: str
 
-    first_sense = parse_sense(senses[0])  # TODO parse all and merge
 
+def to_result(word: Word) -> Result:
     return {
-        "term": result_term,
-        "translation": first_sense["translation"],
-        "example_sentence": first_sense["example_sentence"],
-        "example_sentence_translation": first_sense["example_sentence_translation"],
-        "tags": "",
+        "term": word.term,
+        "translation": word.translation,
+        "example_sentence": word.example_sentence,
+        "example_sentence_translation": word.example_sentence_translation,
+        "tags": " ".join(word.tags),
     }
 
 
-def parse_sense(soup) -> dict[str, str]:
-    translation_num = web.safe_string(soup.select_one("div.glosses > div.count"))
-    translation = web.safe_string(
-        soup.select_one("div.glosses > div.translation > div.tl")
+def parse_word(word: dict) -> Word:
+    term = word.get("reading", "")
+
+    tags: list[str] = []
+    if "jlpt_lvl" in word:
+        tags.append("jlpt_n" + str(word["jlpt_lvl"]))
+    if "is_common" in word and word["is_common"]:
+        tags.append("common")
+
+    senses = word.get("senses", [])
+    parsed_senses = list(map(parse_sense, senses))
+    merged_senses = merge_senses(parsed_senses)
+
+    return Word(
+        term=term,
+        translation=merged_senses.translation,
+        example_sentence=merged_senses.example_sentence,
+        example_sentence_translation=merged_senses.example_sentence_translation,
+        tags=tags,
     )
 
-    example_sentence_raw = soup.find("div", class_="example-sentence")
-    example_sentence_jp_raw = example_sentence_raw.find("ruby", class_="quick")
-    example_sentence_translation_raw = example_sentence_jp_raw.find_next_sibling("div")
 
-    example_sentence_jp = "".join(
-        web.safe_strings(example_sentence_raw.find("ruby", class_="quick"))
+def merge_senses(senses: list[Sense]) -> MergedSenses:
+    """Given a list of all the "senses" of a word, combine/extract the data we
+    need into a flat structure."""
+    meanings: list[str] = []
+    sentences: list[tuple[str, str]] = []
+
+    # Collect all the "glosses" into a single string field, with each numbered
+    # and newline-separated. Also stash away example sentences for us to select
+    # from later.
+    for index, sense in enumerate(senses, start=1):
+        meanings.append(f"{index}. {sense.glosses}")
+        if len(sense.example_sentence) == 2:
+            sentences.append((sense.example_sentence[0], sense.example_sentence[1]))
+
+    translation = "\n".join(meanings)
+
+    example_sentence = ""
+    example_sentence_translation = ""
+    if sentences:
+        # For now, only fetching the first example sentence pair:
+        first_sentence_tuple = sentences[0]
+        example_sentence = first_sentence_tuple[0]
+        example_sentence_translation = first_sentence_tuple[1]
+
+    return MergedSenses(
+        translation=translation,
+        example_sentence=example_sentence,
+        example_sentence_translation=example_sentence_translation,
     )
-    example_sentence_translation = web.safe_string(example_sentence_translation_raw)
 
-    return {
-        "translation": translation_num + " " + translation,
-        "example_sentence": example_sentence_jp,
-        "example_sentence_translation": example_sentence_translation,
-    }
+
+def parse_sense(sense: dict) -> Sense:
+    glosses = ""
+    if "glosses" in sense:
+        glosses = ", ".join(sense["glosses"])
+    example_sentence = []
+    if "example_sentence" in sense:
+        example_sentence = sense["example_sentence"]
+
+    return Sense(glosses=glosses, example_sentence=example_sentence)
