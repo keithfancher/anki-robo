@@ -193,7 +193,7 @@ def parse_furigana(phrase: str) -> tuple[str, str]:
     # Also note: capture groups (adding parens) seems to serve no purpose
     # when doing substitutions. We still have to manually get rid of the
     # enclosing brackets in our funcs above.
-    furi_re = "\[.+?\]"
+    furi_re = r"\[.+?\]"
     kanji_only = re.sub(furi_re, strip_furi, phrase)
     readings_only = re.sub(furi_re, strip_kanji, phrase)
     return (kanji_only, readings_only)
