@@ -129,8 +129,13 @@ def merge_senses(senses: list[Sense]) -> MergedSenses:
     # and newline-separated. Also stash away example sentences for us to select
     # from later.
     for index, sense in enumerate(senses, start=1):
-        # TODO: don't number the definitions if there's only one!
-        meanings.append(f"{index}. {sense.glosses}")
+        if len(senses) == 1:
+            meaning = f"{sense.glosses}"
+        else:
+            # If there's more than one meaning, number them.
+            meaning = f"{index}. {sense.glosses}"
+        meanings.append(meaning)
+
         if len(sense.example_sentence) == 2:
             sentences.append((sense.example_sentence[0], sense.example_sentence[1]))
 
