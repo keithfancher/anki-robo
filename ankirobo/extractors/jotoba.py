@@ -1,3 +1,4 @@
+import re
 from dataclasses import dataclass
 from typing import cast
 
@@ -14,7 +15,7 @@ JOTOBA_SETTINGS = {
     "show_english": True,
     "page_size": 5,  # We only need a result or two, probably...
     "show_example_sentences": True,
-    "sentence_furigana": False, # Seems to have no effect
+    "sentence_furigana": False,  # Seems to have no effect
 }
 
 # Sample `curl` call to hit this API:
@@ -60,8 +61,10 @@ def extract(key: str, local_testing: bool) -> list[Result]:
 @dataclass
 class Word:
     term: str
+    term_reading: str
     translation: str
     example_sentence: str
+    example_sentence_reading: str
     example_sentence_translation: str
     tags: list[str]
 
@@ -82,15 +85,17 @@ class MergedSenses:
 def to_result(word: Word) -> Result:
     return {
         "term": word.term,
+        "term_reading": word.term_reading,
         "translation": word.translation,
         "example_sentence": word.example_sentence,
+        "example_sentence_reading": word.example_sentence_reading,
         "example_sentence_translation": word.example_sentence_translation,
         "tags": " ".join(word.tags),
     }
 
 
 def parse_word(word: dict) -> Word:
-    term = word.get("reading", "")
+    (term, term_reading) = parse_furigana(word.get("reading", ""))
 
     tags: list[str] = []
     if "jlpt_lvl" in word:
@@ -101,11 +106,14 @@ def parse_word(word: dict) -> Word:
     senses = word.get("senses", [])
     parsed_senses = list(map(parse_sense, senses))
     merged_senses = merge_senses(parsed_senses)
+    (ex_sentence, ex_sentence_reading) = parse_furigana(merged_senses.example_sentence)
 
     return Word(
         term=term,
+        term_reading=term_reading,
         translation=merged_senses.translation,
-        example_sentence=merged_senses.example_sentence,
+        example_sentence=ex_sentence,
+        example_sentence_reading=ex_sentence_reading,
         example_sentence_translation=merged_senses.example_sentence_translation,
         tags=tags,
     )
@@ -121,6 +129,7 @@ def merge_senses(senses: list[Sense]) -> MergedSenses:
     # and newline-separated. Also stash away example sentences for us to select
     # from later.
     for index, sense in enumerate(senses, start=1):
+        # TODO: don't number the definitions if there's only one!
         meanings.append(f"{index}. {sense.glosses}")
         if len(sense.example_sentence) == 2:
             sentences.append((sense.example_sentence[0], sense.example_sentence[1]))
@@ -151,3 +160,35 @@ def parse_sense(sense: dict) -> Sense:
         example_sentence = sense["example_sentence"]
 
     return Sense(glosses=glosses, example_sentence=example_sentence)
+
+
+# Jotoba returns sentences with furigana that look like this:
+#     "[悪|わる]いけどほかに[用事|よう|じ]があるの。"
+# This function splits a sentence like the above in two: one without the
+# furigana (kanji-only) and one without the kanji (readings only). Like so:
+#     1. "悪いけどほかに用事があるの。
+#     2 "わるいけどほかにようじがあるの。"
+# This is a slightly annoying but more portable format. And of course Anki can
+# generate its own furigana from sentence 1 above.
+#
+# TODO: convert to Anki-style furigana? The format used by the Anki JP plugin?
+def parse_furigana(phrase: str) -> tuple[str, str]:
+    # One func to strip away the furigana, keeping only the kanji:
+    def strip_furi(match: re.Match) -> str:
+        without_brackets = match.group(0)[1:-1]
+        return without_brackets.split("|")[0]
+
+    # ...and one to do the opposite, keeping only the readings:
+    def strip_kanji(match: re.Match) -> str:
+        without_brackets = match.group(0)[1:-1]
+        readings = without_brackets.split("|")[1:]
+        return "".join(readings)
+
+    # Note: the question mark makes for a NOT-greedy match.
+    # Also note: capture groups (adding parens) seems to serve no purpose
+    # when doing substitutions. We still have to manually get rid of the
+    # enclosing brackets in our funcs above.
+    furi_re = "\[.+?\]"
+    kanji_only = re.sub(furi_re, strip_furi, phrase)
+    readings_only = re.sub(furi_re, strip_kanji, phrase)
+    return (kanji_only, readings_only)
