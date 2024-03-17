@@ -2,7 +2,7 @@ import argparse
 from typing import Optional
 
 import ankirobo as robo
-import cli.ops as ops
+import ankirobo.cli.ops as ops
 
 
 def parse(args: Optional[list[str]] = None) -> argparse.Namespace:

@@ -1,10 +1,10 @@
 from typing import Optional
 
-import cli.args
+import ankirobo.cli.args as args
 
 
 def main(cli_args: Optional[list[str]] = None) -> None:
-    parsed_args = cli.args.parse(cli_args)
+    parsed_args = args.parse(cli_args)
 
     # If the user passes *no* commands, e.g. just calls `./ankirobo`, it somehow
     # is treated as a valid case, but the `callback` property doesn't exist, so
