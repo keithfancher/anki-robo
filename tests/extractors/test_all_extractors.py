@@ -1,24 +1,5 @@
-from typing import TypeAlias
-
-import ankirobo.extractors.jotoba as jotoba
-import ankirobo.extractors.linguee.shared as linguee
-import tests.testdata.jotoba.expected as jotoba_test
-import tests.testdata.linguee.french_english.expected as linguee_fr_en
-import tests.testdata.linguee.german_english.expected as linguee_de_en
-import tests.testdata.linguee.spanish_english.expected as linguee_es_en
-from ankirobo import Result, extract_one
-
-# Map from search key -> expected extraction results.
-ExpectedResultSet: TypeAlias = dict[str, list[Result]]
-
-# Map from extractor name -> expected result set.
-# Simply add a line to this dictionary with your extractor test data.
-expected_results: dict[str, ExpectedResultSet] = {
-    jotoba.NAME: jotoba_test.expected_results,
-    linguee.DE_EN: linguee_de_en.expected_results,
-    linguee.ES_EN: linguee_es_en.expected_results,
-    linguee.FR_EN: linguee_fr_en.expected_results,
-}
+from ankirobo import extract_one
+from tests.testdata.all import all_expected_results
 
 
 # Note that the call to `assert` *seems* to need to happen in an actual `test`
@@ -26,7 +7,7 @@ expected_results: dict[str, ExpectedResultSet] = {
 # diffing/context in failure cases.
 def test_all_extractors():
     testing = True  # Clearly!
-    for extractor_name, expected_result_set in expected_results.items():
+    for extractor_name, expected_result_set in all_expected_results.items():
         for search_key, expected_result in expected_result_set.items():
             result = extract_one(extractor_name, search_key, testing)
             assert (

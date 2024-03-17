@@ -67,6 +67,8 @@ tonnerre_results = [
     )
 ]
 
+extractor_name = linguee.FR_EN
+
 # A mapping of term -> expected output
 expected_results: dict[str, list[Result]] = {
     "encre": encre_results,

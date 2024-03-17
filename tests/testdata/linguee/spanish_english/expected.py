@@ -56,6 +56,8 @@ videojuego_results = [
     )
 ]
 
+extractor_name = linguee.ES_EN
+
 # A mapping of term -> expected output
 expected_results: dict[str, list[Result]] = {
     "calavera": calavera_results,

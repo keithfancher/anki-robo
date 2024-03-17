@@ -1,3 +1,4 @@
+import ankirobo.extractors.jotoba as jotoba
 from ankirobo.types import Result
 
 arukimawaru_results = [
@@ -47,6 +48,8 @@ arashi_results = [
         "tags": "jlpt_n3 common",
     }
 ]
+
+extractor_name = jotoba.NAME
 
 # A mapping of term -> expected output
 expected_results: dict[str, list[Result]] = {
