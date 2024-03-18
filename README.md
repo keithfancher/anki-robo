@@ -51,10 +51,10 @@ the way!
 
 | Name | Source | Type | Info |
 |------|--------|------|------|
-| `jotoba-jp-en` | [Jotoba](https://jotoba.de/) | Japanese -> English | [Details]()
-| `linguee-de-en` | [Linguee](https://www.linguee.com/german-english/) | German -> English | [Details]()
-| `linguee-es-en` | [Linguee](https://www.linguee.com/spanish-english/) | Spanish -> English | [Details]()
-| `linguee-fr-en` | [Linguee](https://www.linguee.com/french-english/) | French -> English | [Details]()
+| `jotoba-jp-en` | [Jotoba](https://jotoba.de/) | Japanese -> English | [Details](extractor-details.md#jotoba)
+| `linguee-de-en` | [Linguee](https://www.linguee.com/german-english/) | German -> English | [Details](extractor-details.md#linguee)
+| `linguee-es-en` | [Linguee](https://www.linguee.com/spanish-english/) | Spanish -> English | [Details](extractor-details.md#linguee)
+| `linguee-fr-en` | [Linguee](https://www.linguee.com/french-english/) | French -> English | [Details](extractor-details.md#linguee)
 
 Click a "Details" link above for more information about using a given
 extractor, the type of data returned, etc.
@@ -106,7 +106,9 @@ Writing CSV output to ankirobo-linguee-fr-en-1709946408.csv... Complete!
 ```
 
 Now I can open Anki, import `ankirobo-linguee-fr-en-1709946408.csv` and start
-learning my new words!
+learning my new words! (See the Linguee extractor's [sample
+data](extractor-details.md#sample-data-1) to get an idea of what fields are
+included.)
 
 ## I'd like to contribute / set up a new data source
 
