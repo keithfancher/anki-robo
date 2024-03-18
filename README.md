@@ -2,16 +2,16 @@
 
 ## 🚨 Warning!
 
-AnkiRobo is **VERY EARLY** in its development. It's alpha software, at best.
+anki-robo is **VERY EARLY** in its development. It's alpha software, at best.
 Use at your own risk!
 
 And of course you should **always remember to back up your Anki deck before
 making any changes to it**, whether with this tool or any other. Don't take
 any chances with your precious Anki data!
 
-## What is AnkiRobo?
+## What is anki-robo?
 
-AnkiRobo is (or will be) a few things:
+anki-robo is (or will be) a few things:
 
 1. 🧩 **A Python library/framework** which provides a common, generic
    interface for extracting data from various sources and creating [Anki
@@ -22,7 +22,7 @@ AnkiRobo is (or will be) a few things:
 3. 🔌 **an Anki plugin** which integrates the above behavior directly into the
    Anki desktop application (but which doesn't exist yet).
 
-In short, AnkiRobo is an **Anki-card-creation framework**.
+In short, anki-robo is an **Anki-card-creation framework**.
 
 ## Who is it for?
 
@@ -35,10 +35,10 @@ a new data source.
 
 ## How does it work?
 
-1. Pass the `ankirobo` CLI application a list of search keys (vocabulary
+1. Pass the `anki-robo` CLI application a list of search keys (vocabulary
    words, for example).
-2. AnkiRobo will query one of its data sources with each of the provided keys,
-   process the data, and output an Anki-friendly `.csv` file.
+2. anki-robo will query one of its data sources with each of the provided
+   keys, process the data, and output an Anki-friendly `.csv` file.
 3. Import this file into Anki and you've got your new cards!
 
 In the future, there will be an option to output a pre-made deck as an `.apkg`
@@ -46,7 +46,7 @@ file, or to integrate directly with Anki itself to create cards.
 
 ## What data sources are available?
 
-AnkiRobo has extractors for the following data sources so far, with more on
+anki-robo has extractors for the following data sources so far, with more on
 the way!
 
 | Name | Source | Type | Info |
@@ -77,12 +77,12 @@ oreiller
 tonnerre
 ```
 
-But making Anki cards is *tedious*. Let's see if `ankirobo` can help. First,
-let's see what data sources are available. The `ankirobo list` command shows
+But making Anki cards is *tedious*. Let's see if anki-robo can help. First,
+let's see what data sources are available. The `anki-robo list` command shows
 all of our configured data sources:
 
 ```
-$ ./ankirobo list
+$ ./anki-robo list
 jotoba-jp-en
 linguee-de-en
 linguee-es-en
@@ -92,11 +92,11 @@ linguee-fr-en
 As you can see, it's still a very short list! But lucky for us, [Linguee
 French/English](https://www.linguee.com/french-english/) is on it.
 
-Next, we can use the `ankirobo get` command to fetch data from Linguee and
+Next, we can use the `anki-robo get` command to fetch data from Linguee and
 output a `.csv` for us, with all the data for our new cards:
 
 ```
-$ ./ankirobo get linguee-fr-en vocabulaire.txt
+$ ./anki-robo get linguee-fr-en vocabulaire.txt
 
 Extracting data from source `linguee-fr-en` using search keys from file: vocabulaire.txt...
 
@@ -115,7 +115,7 @@ included.)
 Awesome! It's easy, if you've got a little Python experience. Comprehensive
 documentation does not exist yet, but here's a quick overview.
 
-The fundamental interface for AnkiRobo is an `Extractor`. An `Extractor` is
+The fundamental interface for anki-robo is an `Extractor`. An `Extractor` is
 just a function which takes a single string (one search key) and returns a
 list of `Result` objects. (There's also a flag for testing -- but don't worry
 about that for now.)
@@ -124,7 +124,7 @@ The `Result` object is a simple Python dictionary -- essentially a map of
 string -> string. This corresponds to "Anki field name -> field data". One
 `Result` corresponds to one Anki card.
 
-In other words, it's just a function that look like this:
+In other words, an extractor is just a function that look like this:
 
 ```python
 def extract(key: str) -> list[Result]:
@@ -140,5 +140,5 @@ example:
 - Process local files (Ebooks? Text files? &c.)
 - ...or whatever else! (Assuming you can implement it in Python.)
 
-You write the code to extract data for a single term, and the AnkiRobo library
-will tie the pieces together for you.
+You write the code to extract data for a single term, and anki-robo will tie
+the pieces together for you.

@@ -33,8 +33,8 @@ def anki_csv_header(extractor_name: str) -> str:
     return "\n".join(
         [
             "#separator:Comma",
-            f"#tags:AnkiRobo {extractor_name}",
-            "#deck:AnkiRobo",
+            f"#tags:anki-robo {extractor_name}",
+            "#deck:anki-robo",
             "#columns:",  # we write the columns with our `csv` writer, above
         ]
     )

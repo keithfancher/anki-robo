@@ -28,8 +28,8 @@ def test_robo_lib_api():
 
 
 expected_csv = """#separator:Comma
-#tags:AnkiRobo linguee-fr-en
-#deck:AnkiRobo
+#tags:anki-robo linguee-fr-en
+#deck:anki-robo
 #columns:input,translation,part_of_speech,other_forms,example_sentence,example_sentence_translation
 encre,ink,"noun, feminine",,Je préfère écrire à l'encre bleue sur papier blanc.,I prefer to write with blue ink on white paper.
 flâner,"stroll, wander",verb,,Elle flânait le long de la plage.,She wandered along the beach."""

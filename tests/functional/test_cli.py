@@ -11,13 +11,13 @@ import ankirobo.cli.main as cli
 
 
 def test_cli_get():
-    # Equivalent to: `./ankirobo get -t -s linguee-fr-en tests/functional/test-terms-fr`
+    # Equivalent to: `./anki-robo get -t -s linguee-fr-en tests/functional/test-terms-fr`
     test_input_path = Path("tests/functional/test-terms-fr")
     cli_args = ["get", "-t", "-s", "linguee-fr-en", str(test_input_path)]
 
     expected_output = """#separator:Comma
-#tags:AnkiRobo linguee-fr-en
-#deck:AnkiRobo
+#tags:anki-robo linguee-fr-en
+#deck:anki-robo
 #columns:input,translation,part_of_speech,other_forms,example_sentence,example_sentence_translation
 hilarant,hilarious,"adjective, masculine","(hilarante f sl, hilarants m pl, hilarantes f pl)",Il me fait rire avec des histoires hilarantes.,He makes me laugh with hilarious stories.
 flâner,"stroll, wander",verb,,Elle flânait le long de la plage.,She wandered along the beach.
@@ -37,7 +37,7 @@ tonnerre,thunder,"noun, masculine",,Nous avons entendu un coup de tonnerre au l
 
 
 def test_cli_get_one():
-    # Equivalent to: `./ankirobo one -t linguee-fr-en flâner`
+    # Equivalent to: `./anki-robo one -t linguee-fr-en flâner`
     cli_args = ["one", "-t", "linguee-fr-en", "flâner"]
 
     expected_output = r"""[
