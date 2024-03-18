@@ -13,12 +13,13 @@ any chances with your precious Anki data!
 
 AnkiRobo is (or will be) a few things:
 
-1. **A Python library/framework** which provides a common, generic interface
-   for extracting data from various sources and creating [Anki
+1. 🧩 **A Python library/framework** which provides a common, generic
+   interface for extracting data from various sources and creating [Anki
    cards](https://apps.ankiweb.net/) from that data;
-2. **a CLI application** which uses the above framework to extract data from a
-   library of pre-configured sources and automatically create Anki cards;
-3. **an Anki plugin** which integrates the above behavior directly into the
+2. 💻 **a CLI application** which uses the above framework to extract data
+   from a library of pre-configured sources and automatically create Anki
+   cards;
+3. 🔌 **an Anki plugin** which integrates the above behavior directly into the
    Anki desktop application (but which doesn't exist yet).
 
 In short, AnkiRobo is an **Anki-card-creation framework**.
@@ -137,5 +138,5 @@ example:
 - Process local files (Ebooks? Text files? &c.)
 - ...or whatever else! (Assuming you can implement it in Python.)
 
-You write the code to extract data for a single term, and the AnkiRobo
-application will tie the pieces together for you.
+You write the code to extract data for a single term, and the AnkiRobo library
+will tie the pieces together for you.
