@@ -43,6 +43,21 @@ a new data source.
 In the future, there will be an option to output a pre-made deck as an `.apkg`
 file, or to integrate directly with Anki itself to create cards.
 
+## What data sources are available?
+
+AnkiRobo has extractors for the following data sources so far, with more on
+the way!
+
+| Name | Source | Type | Info |
+|------|--------|------|------|
+| `jotoba-jp-en` | [Jotoba](https://jotoba.de/) | Japanese -> English | [Details]()
+| `linguee-de-en` | [Linguee](https://www.linguee.com/german-english/) | German -> English | [Details]()
+| `linguee-es-en` | [Linguee](https://www.linguee.com/spanish-english/) | Spanish -> English | [Details]()
+| `linguee-fr-en` | [Linguee](https://www.linguee.com/french-english/) | French -> English | [Details]()
+
+Click a "Details" link above for more information about using a given
+extractor, the type of data returned, etc.
+
 ## Let's see it in action
 
 Sure thing! Keep in mind that it's early in its development, so features are
@@ -67,6 +82,7 @@ all of our configured data sources:
 
 ```
 $ ./ankirobo list
+jotoba-jp-en
 linguee-de-en
 linguee-es-en
 linguee-fr-en
@@ -90,14 +106,6 @@ Writing CSV output to ankirobo-linguee-fr-en-1709946408.csv... Complete!
 
 Now I can open Anki, import `ankirobo-linguee-fr-en-1709946408.csv` and start
 learning my new words!
-
-## What data sources are available?
-
-Right now, just three: [Linguee
-French/English](https://www.linguee.com/french-english/), [Linguee
-Spanish/English](https://www.linguee.com/spanish-english/), and [Linguee
-German/English](https://www.linguee.com/german-english/). I'm working on
-others.
 
 ## I'd like to contribute / set up a new data source
 
