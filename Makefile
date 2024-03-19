@@ -17,7 +17,7 @@ lint:
 
 typecheck:
 	@echo "Checking types..."
-	mypy anki-robo
+	mypy --explicit-package-bases anki-robo ankirobo tests
 	@echo "Done\n"
 
 test:
