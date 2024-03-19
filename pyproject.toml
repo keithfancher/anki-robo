@@ -5,11 +5,15 @@ build-backend = "hatchling.build"
 [project]
 name = "anki-robo"
 version = "0.0.0"
-description = "An Anki-card-creation framework."
+description = "An Anki-card-creation framework"
 authors = [
   {name="Keith Fancher"},
 ]
 requires-python = ">= 3.8"
+dependencies = [
+  "beautifulsoup4",
+  "requests",
+]
 readme = "README.md"
 keywords = ["anki"]
 classifiers = [
@@ -21,6 +25,12 @@ classifiers = [
 
 [project.urls]
 GitHub = "https://github.com/keithfancher/anki-robo"
+
+[project.scripts]
+anki-robo = "ankirobo.cli.main:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["ankirobo"]
 
 [tool.pytest.ini_options]
 # See: https://docs.pytest.org/en/8.0.x/explanation/goodpractices.html
