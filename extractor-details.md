@@ -66,7 +66,7 @@ extractors shares the same code and data format.
 
 Linguee does *not* provide an API, so all of the Linguee extractors must
 scrape linguee.com to fetch their data. Note that Linguee has **very
-aggressive rate limits** -- if you need to fetch data for more than 25-30
+aggressive rate limits** -- if you need to fetch data for more than around 25
 terms at a time, it's likely your IP will be blocked, at least temporarily.
 Watch out!
 
