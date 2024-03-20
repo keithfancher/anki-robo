@@ -1,4 +1,4 @@
-import ankirobo.extractors.web as web
+import ankirobo.extractors.helpers.web as web
 from ankirobo.types import Extractor, Result
 
 # Extractor names

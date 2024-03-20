@@ -1,3 +1,8 @@
+# This module contains helper functions for extractors which rely on scraping
+# websites for their data. Mostly, these functions wrap `requests` and
+# `BeautifulSoup` and provide some standard ways to access local test data in
+# lieu of remote data.
+
 from pathlib import Path
 from typing import Optional
 

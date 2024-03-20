@@ -1,3 +1,8 @@
+# This module contains helper functions for extractors which rely on making API
+# requests to fetch data. Mostly, these functions wrap the `requests` library
+# and provide some standard ways to access local test data in lieu of remote
+# data.
+
 import json
 from pathlib import Path
 from typing import Any

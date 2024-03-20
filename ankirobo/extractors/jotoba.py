@@ -2,7 +2,7 @@ import re
 from dataclasses import dataclass
 from typing import cast
 
-import ankirobo.extractors.api as api
+import ankirobo.extractors.helpers.api as api
 from ankirobo.types import Result
 
 NAME = "jotoba-jp-en"
