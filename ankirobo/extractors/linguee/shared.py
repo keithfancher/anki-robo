@@ -55,7 +55,7 @@ def make_linguee_result(
     }
 
 
-def data_from_term(key: str, term) -> dict[str, str]:
+def data_from_term(key: str, term) -> Result:
     # All the "common" corresponding translations. These are usually the ones
     # with example sentences as well.
     translations = get_translations(term)
