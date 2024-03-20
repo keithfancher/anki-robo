@@ -39,7 +39,7 @@ def extract(key: str, local_testing: bool) -> list[Result]:
     url = "https://jotoba.de/api/app/words"
     data = {"query_str": key, "settings": JOTOBA_SETTINGS}
 
-    response = api.api_post(key, url, data, local_testing, "jotoba")
+    response = api.post(key, url, data, local_testing, "jotoba")
     if not isinstance(response, dict):
         return []
 
