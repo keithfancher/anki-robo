@@ -1,9 +1,9 @@
 from typing import TypeAlias
 
-import tests.testdata.jotoba.expected as jotoba
-import tests.testdata.linguee.french_english.expected as linguee_fr_en
-import tests.testdata.linguee.german_english.expected as linguee_de_en
-import tests.testdata.linguee.spanish_english.expected as linguee_es_en
+import tests.extractors.jotoba as jotoba
+import tests.extractors.linguee.de_en as linguee_de_en
+import tests.extractors.linguee.es_en as linguee_es_en
+import tests.extractors.linguee.fr_en as linguee_fr_en
 from ankirobo import Result
 
 # Map from search key -> expected extraction results.

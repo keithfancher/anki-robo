@@ -9,6 +9,8 @@ from typing import Optional
 import requests
 from bs4 import BeautifulSoup, Tag
 
+import ankirobo.extractors.testdata as testdata
+
 DEFAULT_PARSER: str = "html.parser"
 
 
@@ -35,7 +37,8 @@ def get_remote_page_data(url: str) -> Optional[BeautifulSoup]:
 def get_local_page_data(key: str, path: str, enc: str) -> Optional[BeautifulSoup]:
     """Get local HTML data instead of fetching from a URL. Look for a file
     called `{key}.html` in the given local path."""
-    newpath = Path("tests/testdata/" + path + f"/{key}.html")
+    extractor_rel_path = Path(path + f"/{key}.html")
+    newpath = testdata.get_path(extractor_rel_path)
     if newpath.exists():
         with newpath.open(encoding=enc) as fp:
             soup = BeautifulSoup(fp, DEFAULT_PARSER)

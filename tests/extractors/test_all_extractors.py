@@ -1,5 +1,5 @@
 from ankirobo import extract_one
-from tests.testdata.all import all_expected_results
+from tests.extractors.all import all_expected_results
 
 
 # Note that the call to `assert` *seems* to need to happen in an actual `test`
