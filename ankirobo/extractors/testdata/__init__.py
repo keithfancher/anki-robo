@@ -6,9 +6,9 @@ def get_path(additional: Optional[Path] = None) -> Path:
     """Get path where extractor test data lives. Can optionally pass in an
     additional path, relative to the test data base path, for a particular
     extractor's data."""
-    # TODO: Test this when installed. Probably want to turn this into an
-    # absolute path based on location of this module or something.
-    base_path = Path("ankirobo/extractors/testdata")
+    # Absolute path of the directory which contains this module (which should be
+    # the `testdata` package):
+    base_path = Path(__file__).parent.resolve()
     if additional:
         return base_path / additional
     else:
