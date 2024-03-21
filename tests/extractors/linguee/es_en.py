@@ -3,7 +3,7 @@ from ankirobo.types import Result
 
 calavera_results = [
     linguee.make_linguee_result(
-        input="calavera",
+        term="calavera",
         translation="skull",
         part_of_speech="noun, feminine",
         other_forms="",
@@ -14,7 +14,7 @@ calavera_results = [
 
 parseguir_results = [
     linguee.make_linguee_result(
-        input="perseguir",
+        term="perseguir",
         translation="pursue, chase sb./sth., seek sth.",
         part_of_speech="verb",
         other_forms="",
@@ -25,7 +25,7 @@ parseguir_results = [
 
 suscribirse_results = [
     linguee.make_linguee_result(
-        input="suscribirse",
+        term="suscribirse",
         translation="subscribe to sth., subscribe, sign up",
         part_of_speech="verb",
         other_forms="",
@@ -36,7 +36,7 @@ suscribirse_results = [
 
 tormenta_results = [
     linguee.make_linguee_result(
-        input="tormenta",
+        term="tormenta",
         translation="storm, thunderstorm",
         part_of_speech="noun, feminine",
         other_forms="(plural: tormentas f)",
@@ -47,7 +47,7 @@ tormenta_results = [
 
 videojuego_results = [
     linguee.make_linguee_result(
-        input="videojuego",
+        term="videojuego",
         translation="video game, videogame",
         part_of_speech="noun, masculine",
         other_forms="",

@@ -36,7 +36,7 @@ def make_extractor(language_pair: tuple[str, str]) -> Extractor:
 
 
 def make_linguee_result(
-    input: str,
+    term: str,
     translation: str,
     part_of_speech: str,
     other_forms: str,
@@ -46,7 +46,7 @@ def make_linguee_result(
     """A simple wrapper to ensure I only have to change these key names in one
     place, in the event they need to change. Again."""
     return {
-        "input": input,
+        "term": term,
         "translation": translation,
         "part_of_speech": part_of_speech,
         "other_forms": other_forms,
@@ -84,7 +84,7 @@ def data_from_term(key: str, term) -> Result:
         example_sentence_translation = example_sentence_pairs[0][1]
 
     return make_linguee_result(
-        input=result_term,
+        term=result_term,
         translation=", ".join(translations),
         part_of_speech=part_of_speech,
         other_forms="".join(other_forms).strip(),

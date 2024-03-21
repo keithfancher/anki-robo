@@ -18,7 +18,7 @@ def test_cli_get():
     expected_output = """#separator:Comma
 #tags:anki-robo linguee-fr-en
 #deck:anki-robo
-#columns:input,translation,part_of_speech,other_forms,example_sentence,example_sentence_translation
+#columns:term,translation,part_of_speech,other_forms,example_sentence,example_sentence_translation
 hilarant,hilarious,"adjective, masculine","(hilarante f sl, hilarants m pl, hilarantes f pl)",Il me fait rire avec des histoires hilarantes.,He makes me laugh with hilarious stories.
 flâner,"stroll, wander",verb,,Elle flânait le long de la plage.,She wandered along the beach.
 encre,ink,"noun, feminine",,Je préfère écrire à l'encre bleue sur papier blanc.,I prefer to write with blue ink on white paper.
@@ -42,7 +42,7 @@ def test_cli_get_one():
 
     expected_output = r"""[
   {
-    "input": "fl\u00e2ner",
+    "term": "fl\u00e2ner",
     "translation": "stroll, wander",
     "part_of_speech": "verb",
     "other_forms": "",

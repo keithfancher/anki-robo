@@ -3,7 +3,7 @@ from ankirobo.types import Result
 
 encre_results = [
     linguee.make_linguee_result(
-        input="encre",
+        term="encre",
         translation="ink",
         part_of_speech="noun,\xa0feminine",
         other_forms="",
@@ -14,7 +14,7 @@ encre_results = [
 
 flaner_results = [
     linguee.make_linguee_result(
-        input="flâner",
+        term="flâner",
         translation="stroll, wander",
         part_of_speech="verb",
         other_forms="",
@@ -25,7 +25,7 @@ flaner_results = [
 
 hilarant_results = [
     linguee.make_linguee_result(
-        input="hilarant",
+        term="hilarant",
         translation="hilarious",
         part_of_speech="adjective, masculine",
         other_forms="(hilarante f sl, hilarants m pl, hilarantes f pl)",
@@ -36,7 +36,7 @@ hilarant_results = [
 
 oreiller_results = [
     linguee.make_linguee_result(
-        input="oreiller",
+        term="oreiller",
         translation="pillow",
         part_of_speech="noun,\xa0masculine",
         other_forms="(plural: oreillers m)",
@@ -47,7 +47,7 @@ oreiller_results = [
 
 pister_results = [
     linguee.make_linguee_result(
-        input="pister",
+        term="pister",
         translation="track sb./sth., trail sb./sth.",
         part_of_speech="verb",
         other_forms="",
@@ -58,7 +58,7 @@ pister_results = [
 
 tonnerre_results = [
     linguee.make_linguee_result(
-        input="tonnerre",
+        term="tonnerre",
         translation="thunder",
         part_of_speech="noun,\xa0masculine",
         other_forms="",
@@ -69,7 +69,7 @@ tonnerre_results = [
 
 ecrouler_results = [
     linguee.make_linguee_result(
-        input="s'écrouler",
+        term="s'écrouler",
         translation="collapse, fall down, give way",
         part_of_speech="verb",
         other_forms="",
@@ -80,7 +80,7 @@ ecrouler_results = [
 
 mettre_en_valeur_results = [
     linguee.make_linguee_result(
-        input="mettre en valeur",
+        term="mettre en valeur",
         translation="highlight sth., showcase sth.",
         part_of_speech="verb",
         other_forms="",

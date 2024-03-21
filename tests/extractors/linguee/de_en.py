@@ -3,7 +3,7 @@ from ankirobo.types import Result
 
 schiff_results = [
     linguee.make_linguee_result(
-        input="Schiff",
+        term="Schiff",
         translation="ship, vessel, aisle",
         part_of_speech="noun, neuter",
         other_forms="",
@@ -14,7 +14,7 @@ schiff_results = [
 
 sorgfaltig_results = [
     linguee.make_linguee_result(
-        input="sorgfältig",
+        term="sorgfältig",
         translation="careful, thorough, diligent, accurate, painstaking",
         part_of_speech="adjective",
         other_forms="",
@@ -25,7 +25,7 @@ sorgfaltig_results = [
 
 suchen_results = [
     linguee.make_linguee_result(
-        input="suchen",
+        term="suchen",
         translation="seek, look, find, look for, search, search for sth.",
         part_of_speech="verb",
         other_forms="",
