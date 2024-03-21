@@ -129,4 +129,4 @@ def example_pair_from_line(example_line) -> tuple[str, str]:
     translation."""
     ex_sentence = web.safe_string(example_line.find("span", class_="tag_s"))
     ex_sentence_translation = web.safe_string(example_line.find("span", class_="tag_t"))
-    return (ex_sentence, ex_sentence_translation)
+    return (ex_sentence.strip(), ex_sentence_translation.strip())

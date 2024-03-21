@@ -7,7 +7,7 @@ schiff_results = [
         translation="ship, vessel, aisle",
         part_of_speech="noun, neuter",
         other_forms="",
-        ex_sentence="Das Schiff verließ den Hafen am frühen Morgen. ",
+        ex_sentence="Das Schiff verließ den Hafen am frühen Morgen.",
         ex_sentence_translation="The ship left the port early in the morning.",
     )
 ]
