@@ -26,7 +26,7 @@ def make_extractor(language_pair: tuple[str, str]) -> Extractor:
         # First fetch all returned terms. This might include related
         # terms/definitions in addition to what we're searching for, so we
         # further filter it down before returning.
-        all_terms = soup.select("div#dictionary div.lemma.featured")
+        all_terms = soup.select("div#dictionary div.exact div.lemma.featured")
         all_parsed_terms = [data_from_term(key, term) for term in all_terms]
         return get_term_match(key, all_parsed_terms)
 

@@ -113,4 +113,5 @@ expected_results: dict[str, list[Result]] = {
     "tonnerre": tonnerre_results,
     "écrouler": ecrouler_results,
     "à succès": a_succes_results,
+    "pas de soucis": [],  # should find NO results
 }
