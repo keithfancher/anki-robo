@@ -56,6 +56,8 @@ def make_linguee_result(
 
 
 def data_from_term(key: str, term) -> Result:
+    result_term = get_result_term(term)
+
     # All the "common" corresponding translations. These are usually the ones
     # with example sentences as well.
     translations = get_translations(term)
@@ -82,13 +84,39 @@ def data_from_term(key: str, term) -> Result:
         example_sentence_translation = example_sentence_pairs[0][1]
 
     return make_linguee_result(
-        input=key,
+        input=result_term,
         translation=", ".join(translations),
         part_of_speech=part_of_speech,
         other_forms="".join(other_forms).strip(),
         ex_sentence=example_sentence,
         ex_sentence_translation=example_sentence_translation,
     )
+
+
+def get_result_term(term) -> str:
+    """Get the actual term result, which can sometimes differ slightly from the
+    search key. (For example with French, searching "écrouler" yields results
+    for "s'écrouler". And with German, searching "schiff" yields "Schiff".)"""
+    raw_term = term.select_one("span.tag_lemma > a.dictLink")
+
+    # "Placeholders" -- for example the parts in parens below:
+    #    pister (qqch./qqn.)
+    #    mettre (qqch.) en valeur
+    # For now we're just removing them entirely. For the most part they're
+    # unneeded, and they mess up uniqueness in the "term" field.
+    placeholders = raw_term.find("span", class_="placeholder")
+    if placeholders:
+        # Use `extract` or `replace_with` if we decide to keep the placeholders.
+        placeholders.decompose()
+    result_term = "".join(web.safe_strings(raw_term))
+    return normalize_whitespace(result_term)
+
+
+def normalize_whitespace(s: str) -> str:
+    """Remove any amount of whitespace between words in a string, then replace
+    with a single space."""
+    spl = s.split()
+    return " ".join(spl)
 
 
 def get_translations(term) -> list[str]:

@@ -67,6 +67,29 @@ tonnerre_results = [
     )
 ]
 
+ecrouler_results = [
+    linguee.make_linguee_result(
+        input="s'écrouler",
+        translation="collapse, fall down, give way",
+        part_of_speech="verb",
+        other_forms="",
+        ex_sentence="Le pont s'est écroulé et a dû être reconstruit.",
+        ex_sentence_translation="The bridge fell down and had to be rebuilt.",
+    )
+]
+
+mettre_en_valeur_results = [
+    linguee.make_linguee_result(
+        input="mettre en valeur",
+        translation="highlight sth., showcase sth.",
+        part_of_speech="verb",
+        other_forms="",
+        ex_sentence="Cette présentation met en valeur les atouts du produit.",
+        ex_sentence_translation="This display highlights the features of the product.",
+    )
+]
+
+
 extractor_name = linguee.FR_EN
 
 # A mapping of term -> expected output
@@ -77,4 +100,6 @@ expected_results: dict[str, list[Result]] = {
     "oreiller": oreiller_results,
     "pister": pister_results,
     "tonnerre": tonnerre_results,
+    "écrouler": ecrouler_results,
+    "mettre en valeur": mettre_en_valeur_results,
 }

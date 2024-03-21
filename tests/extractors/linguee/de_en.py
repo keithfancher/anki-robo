@@ -3,7 +3,7 @@ from ankirobo.types import Result
 
 schiff_results = [
     linguee.make_linguee_result(
-        input="schiff",
+        input="Schiff",
         translation="ship, vessel, aisle",
         part_of_speech="noun, neuter",
         other_forms="",
