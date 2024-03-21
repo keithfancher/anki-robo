@@ -23,16 +23,28 @@ def make_extractor(language_pair: tuple[str, str]) -> Extractor:
         if not soup:
             return []
 
-        term_matches = soup.select("div#dictionary div.lemma.featured")
-        if term_matches:
-            # Get only the first matching term. This prevents situations where,
-            # e.g., if you search "encre", you also get "encrer" in the results.
-            first_match = term_matches[0]
-            return [data_from_term(key, first_match)]
-        else:
-            return []
+        # First fetch all returned terms. This might include related
+        # terms/definitions in addition to what we're searching for, so we
+        # further filter it down before returning.
+        all_terms = soup.select("div#dictionary div.lemma.featured")
+        all_parsed_terms = [data_from_term(key, term) for term in all_terms]
+        return get_term_match(key, all_parsed_terms)
 
     return extract
+
+
+def get_term_match(key: str, results: list[Result]) -> list[Result]:
+    """First look for data that matches the search term exactly. (Which we must
+    do because Linguee will NOT always give back exact matches first?!) If
+    there's no exact match, fall back to first result."""
+    if not results:
+        return []
+
+    exact_matches = [x for x in results if x["term"] == key]
+    if exact_matches:
+        return [exact_matches[0]]
+    else:
+        return [results[0]]
 
 
 def make_linguee_result(
@@ -97,19 +109,29 @@ def get_result_term(term) -> str:
     """Get the actual term result, which can sometimes differ slightly from the
     search key. (For example with French, searching "écrouler" yields results
     for "s'écrouler". And with German, searching "schiff" yields "Schiff".)"""
-    raw_term = term.select_one("span.tag_lemma > a.dictLink")
+    raw_term_links = term.select("span.tag_lemma > a.dictLink")
 
-    # "Placeholders" -- for example the parts in parens below:
-    #    pister (qqch./qqn.)
-    #    mettre (qqch.) en valeur
-    # For now we're just removing them entirely. For the most part they're
-    # unneeded, and they mess up uniqueness in the "term" field.
-    placeholders = raw_term.find("span", class_="placeholder")
-    if placeholders:
-        # Use `extract` or `replace_with` if we decide to keep the placeholders.
-        placeholders.decompose()
-    result_term = "".join(web.safe_strings(raw_term))
+    # Each word in a result phrase is potentially its own link with its own placeholders.
+    link_list: list[str] = []
+    for link in raw_term_links:
+        remove_placeholders(link)
+        link_list += web.safe_strings(link)
+
+    result_term = " ".join(link_list)
     return normalize_whitespace(result_term)
+
+
+def remove_placeholders(tag) -> None:
+    """Remove "placeholders" from a given tag, altering the `tag` param in
+    place. For example, the parts in parens below:
+       pister (qqch./qqn.)
+       mettre (qqch.) en valeur"""
+    # Just removing for now. They're unneeded, and they mess up uniqueness in
+    # the "term" field. But if we decide to pull them out and use them, use
+    # `extract` or `replace_with` below instead of `decompose`.
+    placeholders = tag.find("span", class_="placeholder")
+    if placeholders:
+        placeholders.decompose()
 
 
 def normalize_whitespace(s: str) -> str:

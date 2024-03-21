@@ -89,6 +89,17 @@ mettre_en_valeur_results = [
     )
 ]
 
+a_succes_results = [
+    linguee.make_linguee_result(
+        term="à succès",
+        translation="successful, hit",
+        part_of_speech="",
+        other_forms="",
+        ex_sentence="Elle a réalisé sept films à succès.",
+        ex_sentence_translation="She directed seven hit movies.",
+    )
+]
+
 
 extractor_name = linguee.FR_EN
 
@@ -101,5 +112,5 @@ expected_results: dict[str, list[Result]] = {
     "pister": pister_results,
     "tonnerre": tonnerre_results,
     "écrouler": ecrouler_results,
-    "mettre en valeur": mettre_en_valeur_results,
+    "à succès": a_succes_results,
 }
