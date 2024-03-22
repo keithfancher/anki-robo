@@ -1,14 +1,14 @@
 from dataclasses import dataclass
-from typing import Callable, TypeAlias
+from typing import Callable
 
 # A search key is just a string. (This alias is just for explicitness in type
 # signatures. You don't have to use it.)
-SearchKey: TypeAlias = str
+SearchKey = str
 
 # A `Result` is just a map from string -> string, corresponding to "Anki card
 # field name" -> "Anki card field value". As you might guess, one `Result`
 # corresponds to one Anki card.
-Result: TypeAlias = dict[str, str]
+Result = dict[str, str]
 
 # An `Extractor` is just a function! At its heart, it's a function that takes a
 # single search key and returns a list of results. However, there's also a
@@ -19,7 +19,9 @@ Result: TypeAlias = dict[str, str]
 # that looks like this:
 #
 #     def extract(key: str, local_testing: bool) -> list[Result]:
-Extractor: TypeAlias = Callable[[SearchKey, bool], list[Result]]
+#
+# (Note: `TypeAlias` not added till python 3.10!)
+Extractor = Callable[[SearchKey, bool], list[Result]]
 
 
 class InvalidExtractorName(Exception):

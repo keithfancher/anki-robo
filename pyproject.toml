@@ -9,7 +9,7 @@ description = "An Anki-card-creation framework"
 authors = [
   {name="Keith Fancher"},
 ]
-requires-python = ">= 3.8"
+requires-python = ">= 3.9"
 dependencies = [
   "beautifulsoup4",
   "requests",

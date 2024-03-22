@@ -1,5 +1,3 @@
-from typing import TypeAlias
-
 import tests.extractors.jotoba as jotoba
 import tests.extractors.linguee.de_en as linguee_de_en
 import tests.extractors.linguee.es_en as linguee_es_en
@@ -7,7 +5,8 @@ import tests.extractors.linguee.fr_en as linguee_fr_en
 from ankirobo import Result
 
 # Map from search key -> expected extraction results.
-ExpectedResultSet: TypeAlias = dict[str, list[Result]]
+# (Note: `TypeAlias` not added till python 3.10!)
+ExpectedResultSet = dict[str, list[Result]]
 
 # Map from extractor name -> expected result set.
 # Simply add a line to this dictionary with your extractor test data.
