@@ -148,6 +148,7 @@ extractor, the type of data returned, etc.
 
 - [ ] Option to output an Anki `.apkg` file instead of a `.csv`
 - [ ] Accept markdown input (lists and checklists)
+- [ ] Media support (audio, images, &c.)
 - [ ] Merge results from multiple data sources into a single output set
 - [ ] Anki plugin, to use directly from desktop Anki interface
 - [ ] More data sources!
