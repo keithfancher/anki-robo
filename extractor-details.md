@@ -83,7 +83,7 @@ Luckily there are [other extractors](#jotoba) for Japanese!)
 
 ```json
 {
-  "input": "hilarant",
+  "term": "hilarant",
   "translation": "hilarious",
   "part_of_speech": "adjective, masculine",
   "other_forms": "(hilarante f sl, hilarants m pl, hilarantes f pl)",

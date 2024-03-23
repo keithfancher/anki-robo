@@ -1,13 +1,32 @@
-# anki-robo
+# 🤖 anki-robo
 
-## 🚨 Warning!
+An Anki-card-creation framework. Quickly create [Anki](https://apps.ankiweb.net/)
+cards using data from remote sources. (Or any sources, really!)
 
-anki-robo is **VERY EARLY** in its development. It's alpha software, at best.
+## Table of contents
+
+- [Warning](#-warning-)
+- [What is anki-robo?](#what-is-anki-robo)
+- [Who is it for?](#who-is-it-for)
+- [Quick-start](#quick-start)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Available data sources](#available-data-sources)
+- [Future plans / roadmap](#future-plans--roadmap)
+- [I'd like to contribute / set up a new data source](#id-like-to-contribute--set-up-a-new-data-source)
+
+## 🚨 Warning 🚨
+
+anki-robo is still **EARLY** in its development. It's beta software, at best.
 Use at your own risk!
 
 And of course you should **always remember to back up your Anki deck before
 making any changes to it**, whether with this tool or any other. Don't take
 any chances with your precious Anki data!
+
+(That said, don't worry: anki-robo does **not** currently make any changes to
+your Anki deck directly. It simply outputs Anki-importable CSV files. You're
+in complete control of how that data is imported into your decks.)
 
 ## What is anki-robo?
 
@@ -28,23 +47,89 @@ In short, anki-robo is an **Anki-card-creation framework**.
 
 Do you use Anki? Do you ever make Anki cards? It might be for you.
 
-## Do I need to know how to program to use it?
+## Quick-start
 
-Nope! You only need to write code if you plan to contribute an "extractor" for
-a new data source.
+The `anki-robo` CLI app takes the name of a *data source* and an *input file*.
+The file contains newline-delimited search terms. `anki-robo` will query the
+data source with each search term and collect the resulting data into an
+Anki-importable format.
 
-## How does it work?
+First, let's check what data sources are available with the `anki-robo list`
+command:
 
-1. Pass the `anki-robo` CLI application a list of search keys (vocabulary
-   words, for example).
-2. anki-robo will query one of its data sources with each of the provided
-   keys, process the data, and output an Anki-friendly `.csv` file.
-3. Import this file into Anki and you've got your new cards!
+```
+$ anki-robo list
+jotoba-jp-en
+linguee-de-en
+linguee-es-en
+linguee-fr-en
+```
 
-In the future, there will be an option to output a pre-made deck as an `.apkg`
-file, or to integrate directly with Anki itself to create cards.
+Now, let's say I'm studying French. I keep a running list of words I want to
+make Anki cards for later. Here's my list so far:
 
-## What data sources are available?
+```
+$ cat vocabulaire.txt
+hilarant
+flâner
+encre
+oreiller
+tonnerre
+```
+
+Okay, let's make our cards! We use the `anki-robo get` command. Again, it
+takes the name of the data source (`linguee-fr-en`) and the file with my
+search terms (`vocabulaire.txt`):
+
+```
+$ anki-robo get linguee-fr-en vocabulaire.txt
+Extracting data from source `linguee-fr-en` using search keys from file: vocabulaire.txt...
+Writing CSV output to ankirobo-linguee-fr-en-1709946408.csv... Complete!
+```
+
+The CSV data file will be populated with the words, their definitions, sample
+sentences, and plenty of other data for your Anki cards.
+
+Now I can open Anki, import `ankirobo-linguee-fr-en-1709946408.csv` and start
+learning my new words! (See the Linguee extractor's [sample
+data](extractor-details.md#sample-data-1) to get an idea of what fields are
+included in this particular case.)
+
+## Requirements
+
+- Python >= `3.9` (which is also the version currently bundled with Anki)
+
+The following dependencies will be installed automatically if you use `pip` to
+install anki-robo:
+
+- `requests`
+- `beautifulsoup4`
+
+## Installation
+
+To install the latest stable version of anki-robo from PyPI, use `pip`:
+
+```
+$ pip install anki-robo
+```
+
+If you'd like to install the bleeding-edge, not-yet-released version, you can
+do that too:
+
+```
+$ pip install https://github.com/keithfancher/anki-robo/archive/refs/heads/master.tar.gz
+```
+
+You can also simply clone the repo and run the included `anki-robo` binary
+directly. However, in this case you'll need to manually install anki-robo's
+dependencies. The quickest way to do that is to use the included
+`requirements.txt` file:
+
+```
+$ pip install -r requirements.txt
+```
+
+## Available data sources
 
 anki-robo has extractors for the following data sources so far, with more on
 the way!
@@ -59,56 +144,14 @@ the way!
 Click a "Details" link above for more information about using a given
 extractor, the type of data returned, etc.
 
-## Let's see it in action
+## Future plans / roadmap
 
-Sure thing! Keep in mind that it's early in its development, so features are
-still limited.
-
-For this example, let's say I'm studying French. I've got a list where I keep
-track of new words I come across, with the goal of making an Anki card for
-each new word. Here's my list:
-
-```
-$ cat vocabulaire.txt
-hilarant
-flâner
-encre
-oreiller
-tonnerre
-```
-
-But making Anki cards is *tedious*. Let's see if anki-robo can help. First,
-let's see what data sources are available. The `anki-robo list` command shows
-all of our configured data sources:
-
-```
-$ ./anki-robo list
-jotoba-jp-en
-linguee-de-en
-linguee-es-en
-linguee-fr-en
-```
-
-As you can see, it's still a very short list! But lucky for us, [Linguee
-French/English](https://www.linguee.com/french-english/) is on it.
-
-Next, we can use the `anki-robo get` command to fetch data from Linguee and
-output a `.csv` for us, with all the data for our new cards:
-
-```
-$ ./anki-robo get linguee-fr-en vocabulaire.txt
-
-Extracting data from source `linguee-fr-en` using search keys from file: vocabulaire.txt...
-
-[etc... trimming full output in the name of space]
-
-Writing CSV output to ankirobo-linguee-fr-en-1709946408.csv... Complete!
-```
-
-Now I can open Anki, import `ankirobo-linguee-fr-en-1709946408.csv` and start
-learning my new words! (See the Linguee extractor's [sample
-data](extractor-details.md#sample-data-1) to get an idea of what fields are
-included.)
+- [ ] Option to output an Anki `.apkg` file instead of a `.csv`
+- [ ] Accept markdown input (lists and checklists)
+- [ ] Merge results from multiple data sources into a single output set
+- [ ] Anki plugin, to use directly from desktop Anki interface
+- [ ] More data sources!
+- [ ] ...and so on :D
 
 ## I'd like to contribute / set up a new data source
 
