@@ -10,6 +10,10 @@ Each anki-robo extractor is described in detail in the sections below.
 
 ### Additional notes
 
+For best results, search using the most specific form of a given term. (For
+example, search for "馬鹿な" rather than "ばかな".) Japanese is packed with
+homonyms!
+
 The extractor adds a tag for a term's JLPT level and the `common` tag if it's
 a common word.
 
@@ -63,6 +67,11 @@ slightly different way:
 
 Linguee supports many different languages. Each of the above Linguee
 extractors shares the same code and data format.
+
+Note: for best results, do *not* include articles in your search keys. (For
+example, search for "dictionnaire", not "le dictionnaire" or "un
+dictionnaire".) Oddly enough, including the article causes Linguee to return
+far less useful results.
 
 Linguee does *not* provide an API, so all of the Linguee extractors must
 scrape linguee.com to fetch their data. Note that Linguee has **very
