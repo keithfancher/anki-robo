@@ -142,13 +142,15 @@ the way!
 | `linguee-fr-en` | [Linguee](https://www.linguee.com/french-english/) | French -> English | [Details](extractor-details.md#linguee)
 
 Click a "Details" link above for more information about using a given
-extractor, the type of data returned, etc.
+extractor, the type of data returned, etc. (In particular, be sure to check
+the **rate limits** for the data source you plan to use!)
 
 ## Future plans / roadmap
 
 - [ ] Option to output an Anki `.apkg` file instead of a `.csv`
 - [ ] Accept markdown input (lists and checklists)
 - [ ] Media support (audio, images, &c.)
+- [ ] Extractor-specific configs (for API keys and so on)
 - [ ] Merge results from multiple data sources into a single output set
 - [ ] Anki plugin, to use directly from desktop Anki interface
 - [ ] More data sources!
